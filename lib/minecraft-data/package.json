@@ -1,0 +1,49 @@
+{
+  "name": "minecraft-data",
+  "version": "0.13.0",
+  "description": "Provide easy access to minecraft data in node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/PrismarineJS/node-minecraft-data.git"
+  },
+  "keywords": [
+    "minecraft",
+    "data",
+    "node.js"
+  ],
+  "author": {
+    "name": "Romain Beaumont",
+    "email": "romain.rom1@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrismarineJS/node-minecraft-data/issues"
+  },
+  "gitHead": "0915602bd7e87f1b8912b1fe8964086cbf3ef480",
+  "homepage": "https://github.com/PrismarineJS/node-minecraft-data#readme",
+  "_id": "minecraft-data@0.13.0",
+  "_shasum": "e9150abc56ffc51239c28205610cf1edfbbcdff8",
+  "_from": "minecraft-data@>=0.13.0 <0.14.0",
+  "_npmVersion": "2.14.4",
+  "_nodeVersion": "4.1.1",
+  "_npmUser": {
+    "name": "rom1504",
+    "email": "romain.rom1@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "rom1504",
+      "email": "romain.rom1@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "e9150abc56ffc51239c28205610cf1edfbbcdff8",
+    "tarball": "http://registry.npmjs.org/minecraft-data/-/minecraft-data-0.13.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/minecraft-data/-/minecraft-data-0.13.0.tgz"
+}

@@ -1,0 +1,16 @@
+{
+    "name": "FlyingPony",
+    "author": "109C",
+    "dependencies":{
+        "minecraft-protocol": "git://github.com/PrismarineJS/node-minecraft-protocol#master",
+        "prismarine-world": "*",
+        "vec3": "git://github.com/andrewrk/node-vec3#master",
+        "prismarine-chunk": "*",
+        "uuid-1345": "*",
+        "minecraft-data": "git://github.com/PrismarineJS/node-minecraft-data#master"
+    },
+    "keywords": [
+        "thisandagain",
+        "please explain"
+    ]
+}
