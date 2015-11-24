@@ -1,4 +1,14 @@
-# What is this?
+# What is FlyingPony?
+
+ A ultramodern JSON Minecraft server written in ES9 with the HTML8 boilerplate and cutting edge jQuery enabled node.js ModernizrifyJS.
+ Because of the new ES9 quantum JIT emitters, it's guaranteed 110% uptime, even when restarting. (As long as you don't observe it.)
+ 
+# I don't have ES9 yet, can I still use this?
+
+ Yes you can! Using the babel-coffeJSr-ify runtime decompiler, it's possible to run this using only as ES 0.2 (Beta) jQuery engine.
+ In fact, it even works on Netscape 1.33.7, using PWACFJSv9001. (PollyWantACrackerFiller.JS)
+
+# No really, what is this?
  A spoof of flying-squid.
  
 # This actually works?
