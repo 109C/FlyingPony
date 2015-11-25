@@ -13,3 +13,26 @@
  
 # This actually works?
  Surprisingly, you can log in and do some stuff, despite all the bugs...
+ 
+## Planned features
+- [ ] World
+  - [X] Prismarine-world worlds
+  - [ ] Switching between worlds
+  - [ ] Dynamicly creating / destroying worlds
+- [ ] Blocks
+  - [X] Regular blocks
+  - [ ] Entity blocks / Blocks with invenventories
+- [ ] Player
+  - [X] Movement
+  - [ ] Inventory
+  - [ ] Block breaking / Block placement
+- [ ] Entities
+  - [ ] Mobs (Cow, Zombie, etc)
+  - [ ] Drops
+  - [ ] Custom entity classes
+  - [ ] Entity interaction
+- [ ] Plugins
+  - [X] Custom events
+  - [X] Custom entities
+  - [ ] A server - plugin interface
+  - [X] Modify the default actions
