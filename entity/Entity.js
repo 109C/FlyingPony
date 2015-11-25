@@ -24,10 +24,16 @@ module.exports = function Entity(UEID, World){
     this.isPlayer = function(){
         return false
     }
-    this.isDrop = function(){
+    this.isMob = function(){
         return false
     }
-    this.isMob = function(){
+    this.isObject = function(){
+        return false
+    }
+    this.hasMetadataPacket = function(){
+        return false
+    }
+    this.isGravitational = function(){
         return false
     }
     this.getPhysicalWidth = function(){
@@ -44,6 +50,9 @@ module.exports = function Entity(UEID, World){
     }
     
     this.changeWorld = function(NewWorld){
+        
+    }
+    this.doGravity = function(){
         
     }
     this.getDistanceFrom = function(Entity){

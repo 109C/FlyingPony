@@ -12,6 +12,6 @@ module.exports = function EntityMob(UEID, World){
         return true
     }
     this.getMobId = function(){
-        throw new Error("Not a mob, should be overridden by class (EntityMob)")
+        throw new Error("Not a mob, should be overridden by class (EntityMob.getMobId())")
     }
 }

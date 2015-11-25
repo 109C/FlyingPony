@@ -2,7 +2,7 @@
 
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
-var EntityMob = require("./EntityMob.js")
+var Entity = require("./Entity.js")
 var Inventory = require("../items/Inventory.js")
 
 module.exports = function Player(UEID, Client, World){
@@ -10,7 +10,7 @@ module.exports = function Player(UEID, Client, World){
     Assert(typeof Client.username == 'string', "Client's username must be a string")
     Assert(typeof Client.write == 'function', "Client must implement a write method")
     
-    Inheritance(new EntityMob(UEID, World), this)
+    Inheritance(new Entity(UEID, World), this)
     
     _self = this
     this.Client = Client
@@ -30,19 +30,12 @@ module.exports = function Player(UEID, Client, World){
         // Nothing
     }
     this.sendInventory = function(){
-        for(var row = 0; row < 4; row++){
-            for(var column = 0; column < 9; column++){
-                var ItemStack = this.inventory.getSlot(row, column)
-                this.Client.write('set_slot', {
-                   windowId: 0,
-                   slot: row * 9 + column + 9,
-                   item: {
-                       blockId: ItemStack.itemType.id,
-                       itemCount: ItemStack.stackSize,
-                       itemDamage: 0
-                   }
-                })
-            }
+        for(var slot = 0; slot < 4 * 9; slot++){
+            this.Client.write('set_slot', {
+                windowId: 0,
+                slot: slot + 9,
+                item: this.inventory.getSlot(slot).toNotch()
+            })
         }
     }
     this.sendPlayerInfos = function(){
@@ -76,12 +69,13 @@ module.exports = function Player(UEID, Client, World){
                 pitch: Entity.pitch,
                 currentItem: 0,
                 metadata: []
-        });
-        }else if(Entity.isMob()){
+            })
+        }
+        if(Entity.isMob()){
             this.Client.write('spawn_entity_living', {
                 entityId: Entity.ueid,
                 type: Entity.getMobId(),
-                x: Entity.position.z * 32,
+                x: Entity.position.x * 32,
                 y: Entity.position.y * 32,
                 z: Entity.position.z * 32,
                 pitch: Entity.pitch,
@@ -91,6 +85,29 @@ module.exports = function Player(UEID, Client, World){
                 velocityY: 0,
                 velocityZ: 0,
                 metadata: []
+            })
+        }
+        if(Entity.isObject()){
+            this.Client.write('spawn_entity', {
+                entityId: Entity.ueid,
+                type: Entity.getObjectId(),
+                x : Entity.position.x * 32,
+                y : Entity.position.y * 32,
+                z : Entity.position.z * 32,
+                yaw: Entity.yaw,
+                pitch: Entity.pitch,
+                objectData: {
+                    intField: 0,
+                    velocityX: 0,
+                    velocityY: 0,
+                    velocityZ: 0,
+                }
+            })
+        }
+        if(Entity.hasMetadataPacket()){
+            this.Client.write('entity_metadata', {
+                entityId: Entity.ueid,
+                metadata: Entity.getMetadataPacket()
             })
         }
     }
@@ -103,6 +120,10 @@ module.exports = function Player(UEID, Client, World){
             yaw: Entity.yaw,
             pitch: Entity.pitch,
             onGround: false
+        })
+        this.Client.write('entity_head_rotation', {
+            entityId: Entity.ueid,
+            headYaw: Entity.yaw
         })
     }
     this.sendLoginInfo = function(){
