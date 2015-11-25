@@ -21,11 +21,11 @@ function onLoad(API){
         }
         
         API.emit(new CommandEvent(newPlayer, commandName, newArgs))
-        Command.getSender().tellRaw({text:"Executed command '" + commandName + "' as player '" + args[0] + "'", color: "green" })
+        Command.hasSender() && Command.getSender().tellRaw({text:"Executed command '" + commandName + "' as player '" + args[0] + "'", color: "green" })
         return true
         
         function showHelp(){
-            Command.getSender().tellRaw({text:"Usage: /sudo [player name] [command] [args...]", color:"red"})
+            Command.hasSender() && Command.getSender().tellRaw({text:"Usage: /sudo [player name] [command] [args...]", color:"red"})
         }
     })
 }

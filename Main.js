@@ -9,6 +9,7 @@ var Vec3 = Library.Vec3
 var UUID = Library.UUID
 
 var Logger = require("./logger/Logger")
+var ClientAssert = require("./util/ClientAssert.js")
 
 var EventLoop = require("./event_loop/EventLoop.js")
 var Scheduler = require("./event_loop/Scheduler.js")
@@ -25,6 +26,7 @@ var LogoutEvent = require("./events/LogoutEvent.js")
 var IncomingMessageEvent = require("./events/IncomingMessageEvent.js")
 var MoveEvent = require("./events/MoveEvent.js")
 var LookEvent = require("./events/LookEvent.js")
+var EntityUseEvent = require("./events/EntityUseEvent.js")
 
 var Server = {}
 
@@ -48,11 +50,14 @@ Server.generateUEID = function(){
 }
 
 Server.bootHandles.PlayerLogin = function(Client){
+    var Assert = ClientAssert(Client)
     var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.lobbyWorld)
+    
     Client.on('end', function(){
         Server.Scheduler.addEvent(1, new LogoutEvent(CurrentPlayer))
     })
     Client.on('chat', function(data){
+        Assert(data.message.length <= 119, "chat: Invalid chat message, too long")
         Server.Scheduler.addEvent(1, new IncomingMessageEvent(CurrentPlayer, data.message))
     })
     Client.on('position', function(packet){
@@ -64,6 +69,11 @@ Server.bootHandles.PlayerLogin = function(Client){
     Client.on('position_look', function(packet){
         Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(packet.x, packet.y, packet.z)), false)
         Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, packet.pitch, packet.yaw, false))
+    })
+    Client.on('use_entity', function(packet){
+        Assert(typeof CurrentPlayer.world.entities[packet.target] == 'object', "use_entity: Invalid ueid")
+        Assert(packet.mouse == 0 || packet.mouse == 1 || packet.mouse == 2, "use_entity: Invalid mouse mode")
+        Server.Scheduler.addEvent(1, new EntityUseEvent(CurrentPlayer, CurrentPlayer.world.entities[packet.target], packet.mouse))
     })
     Server.Scheduler.addEvent(1, new LoginEvent(CurrentPlayer))
 }

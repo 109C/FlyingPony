@@ -27,7 +27,7 @@ function onLoad(_API){
 
 function spawnFakeEntity(Command){
     if(Command.getArgs().length == 0){
-        Command.getSender().tellRaw({
+        Command.hasSender() && Command.getSender().tellRaw({
             text: "Usage: /spawnable [entity name]",
             color: "red"
         })
@@ -52,44 +52,25 @@ function spawnFakeEntity(Command){
         API.emit(new EntitySpawnEvent(new DroppedItemEntity(UEID, StackToDrop, Sender.world)))
     
     }else{
-        Command.getSender().tellRaw({
+        Command.hasSender() && Command.getSender().tellRaw({
             text: "Unable to spawn entity named '" + EntityType + "'",
             color: "red"
         })
         return true
     }
-    Command.getSender().tellRaw({
+    Command.hasSender() && Command.getSender().tellRaw({
         text: "Spawned the entity",
         color: "green"
     })
     return true
 }
 
-function spawnFakeZombie(Command){
-    var UEID = API.generateUEID()
-    API.emit(new EntitySpawnEvent(new ZombieEntity(UEID, Command.getSender().world)))
-    return true
-}
-
-function spawnFakePlayer(Command){
-    Command.getSender().tellRaw({
-        text: "Spawned fake player"
-    })
-    
-    var UEID = API.generateUEID()
-    
-    var FakePlayer = new FakePlayerEntity(UEID, "hithere" + Math.floor(Math.random() * 1000), Command.getSender().world)
-    
-    FakePlayer.uuid = UUID.v3({namespace: UUID.namespace.dns, name: String(Math.random())})
-    
-    API.emit(1, new LoginEvent(FakePlayer))
-    return true
-}
 function jump(Command){
     var JumpHeight = Number(Command.getArgs()[0]) || 5
     API.emit(1, new MoveEvent(Command.getSender(), Command.getSender().position.add(Vec3(0, JumpHeight, 0)), true));
     return true
 }
+
 function printPosition(Command){
 	var S = Command.getSender()
 	
