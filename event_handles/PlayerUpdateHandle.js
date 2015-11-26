@@ -14,7 +14,7 @@ module.exports = function(Server, Event){
             
             CurrentChunkX = PlayerChunkX + OffsetX
             CurrentChunkZ = PlayerChunkZ + OffsetZ
-            if(Player.sentChunks[ "" + CurrentChunkX + CurrentChunkZ] == true) continue
+            if(Player.sentChunks[ "" + CurrentChunkX + "|" + CurrentChunkZ] == true) continue
             
             Player.rawWorld.getColumn(CurrentChunkX, CurrentChunkZ)
                 .then(function(Chunk){
