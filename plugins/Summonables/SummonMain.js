@@ -17,7 +17,7 @@ var EntitySpawnEvent = require("../../events/EntitySpawnEvent.js")
 module.exports = onLoad
 
 function onLoad(){
-    this.registerCommand("spawnable", spawnFakeEntity)
+    this.registerCommand("summonable", spawnFakeEntity)
     this.registerCommand("jump", jump)
     this.registerCommand("p", printPosition)
 }
@@ -25,7 +25,7 @@ function onLoad(){
 function spawnFakeEntity(Command){
     if(Command.getArgs().length == 0){
         Command.hasSender() && Command.getSender().tellRaw({
-            text: "Usage: /spawnable [entity name]",
+            text: "Usage: /summonable [entity name]",
             color: "red"
         })
         return true
@@ -42,7 +42,9 @@ function spawnFakeEntity(Command){
         this.emit(1, new LoginEvent(FakePlayer))
     
     }else if(EntityType == "Zombie"){
-        this.emit(new EntitySpawnEvent(new ZombieEntity(UEID, Sender.world)))
+        var NewZombie = new ZombieEntity(UEID, Sender.world)
+        NewZombie.tick()
+        this.emit(new EntitySpawnEvent(NewZombie))
     
     }else if(EntityType == "DroppedItem"){
         var StackToDrop = new ItemStack(new Item("iron_shovel"), 1)

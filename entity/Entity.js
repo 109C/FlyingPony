@@ -61,7 +61,7 @@ module.exports = function Entity(UEID, World){
     this.getNearbyEntities = function(MaxDistance){
         var NearEntities = []
         for(EntityKey in this.world.entities){
-            var Entity = this.world.entities[PlayerKey]
+            var Entity = this.world.entities[EntityKey]
             
             if(this.getDistanceFrom(CurrentEntity) <= MaxDistance && this != CurrentEntity){
                 NearPlayers.push(CurrentEntity)

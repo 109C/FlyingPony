@@ -12,7 +12,7 @@ function onLoad(){
         }
         
         
-        var newPlayer = API.getPlayer(args[0])
+        var newPlayer = this.getPlayer(args[0])
         var commandName = args[1]
         var newArgs = args.slice(2)
         

@@ -2,6 +2,8 @@
 
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
+var Convert = require("../util/Convert.js")
+
 var Entity = require("./Entity.js")
 var Inventory = require("../items/Inventory.js")
 
@@ -117,7 +119,7 @@ module.exports = function Player(UEID, Client, World){
             x: Entity.position.x * 32,
             y: Entity.position.y * 32,
             z: Entity.position.z * 32,
-            yaw: Entity.yaw,
+            yaw: Convert.Convert360To256(Entity.yaw),
             pitch: Entity.pitch,
             onGround: false
         })
