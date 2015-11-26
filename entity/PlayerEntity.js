@@ -148,13 +148,13 @@ module.exports = function Player(UEID, Client, World){
                 "flags": 0x00
             }) 
     }
-    this.sendChunkData = function(ChunkX, ChunkZ, Chunk){
+    this.sendChunkData = function(ChunkX, ChunkZ, ChunkDump, IsLoad){
         this.Client.write("map_chunk", {
             "x": ChunkX,
             "z": ChunkZ,
             "groundUp": true,
-            "bitMap": 0xffff,
-            "chunkData": Chunk.dump()
+            "bitMap": (IsLoad ? 0xffff : 0x0000),
+            "chunkData": ChunkDump
         })
     }
     this.tellRaw = function(Message){
