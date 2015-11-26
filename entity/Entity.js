@@ -11,6 +11,7 @@ module.exports = function Entity(UEID, World){
     Assert(typeof World.PrismarineWorld == 'object', "The world's prismarine world must be an object or instance of PrismarineWorld")
     
     this.position = new Vec3(0, 16, 0)
+    this.velocity = new Vec3(0, 0, 0)
     this.uuid = "0-0-0-0-0"
     this.ueid = UEID
     this.yaw = 0
@@ -19,7 +20,10 @@ module.exports = function Entity(UEID, World){
     this.rawWorld = World.PrismarineWorld
     
     this.tick = function(){
-        return;
+        if(this.isGravitational()){
+            this.doGravity()
+        }
+        this.doPhysics()
     }
     this.isPlayer = function(){
         return false
@@ -48,13 +52,12 @@ module.exports = function Entity(UEID, World){
     this.teleportTo = function(Vector){
         this.position = Vector
     }
+    this.changeWorld = function(NewWorld){}
     
-    this.changeWorld = function(NewWorld){
-        
-    }
-    this.doGravity = function(){
-        
-    }
+    this.doGravity = function(){}
+    this.doPhysics = function(){}
+    this.doAI = function(){}
+    
     this.getDistanceFrom = function(Entity){
         return this.position.distanceTo(Entity.position)
     }

@@ -28,9 +28,6 @@ module.exports = function Player(UEID, Client, World){
     this.isPlayer = function(){
         return true
     }
-    this.tick = function(){
-        // Nothing
-    }
     this.sendInventory = function(){
         for(var slot = 0; slot < 4 * 9; slot++){
             this.Client.write('set_slot', {
