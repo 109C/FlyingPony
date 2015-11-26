@@ -50,8 +50,8 @@ Server.generateUEID = function(){
 }
 
 Server.bootHandles.PlayerLogin = function(Client){
-    var Assert = ClientAssert(Client)
     var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.lobbyWorld)
+    var Assert = ClientAssert(CurrentPlayer, Server)
     
     Client.on('end', function(){
         Server.Scheduler.addEvent(1, new LogoutEvent(CurrentPlayer))

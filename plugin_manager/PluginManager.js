@@ -21,7 +21,7 @@ module.exports = function PluginManager(){
             for(PluginKey in this.plugins){
                 var Plugin = this.plugins[PluginKey]
                 if(Plugin.commands[Command]){
-                    if( Plugin.commands[Command].apply(Plugin, [Event]) ) return true;
+                    if( Plugin.commands[Command].apply(Plugin.Interface, [Event]) ) return true;
                 }
             }
         }
@@ -30,7 +30,7 @@ module.exports = function PluginManager(){
         for(PluginKey in this.plugins){
             var Plugin = this.plugins[PluginKey]
             if(Plugin.listeners[Event.getType()]){
-                if( Plugin.listeners[Event.getType()].apply(Plugin, [Event]) ) return true;
+                if( Plugin.listeners[Event.getType()].apply(Plugin.Interface, [Event]) ) return true;
             }
         }
         
@@ -73,7 +73,9 @@ module.exports = function PluginManager(){
             var Plugin = require("../plugins/" + Folder + "/" + PluginInfo.PluginFile)
             var Interface = new PluginInterface(Server, CurrentPlugin)
             
-            Plugin(Interface)
+            _self.plugins[Folder].Interface = Interface
+            
+            Plugin.call(Interface)
         })
     }
     this.disablePlugin = function(PluginName){

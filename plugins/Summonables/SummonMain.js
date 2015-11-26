@@ -16,13 +16,10 @@ var EntitySpawnEvent = require("../../events/EntitySpawnEvent.js")
 
 module.exports = onLoad
 
-var API;
-
-function onLoad(_API){
-	API = _API
-    API.registerCommand("spawnable", spawnFakeEntity)
-    API.registerCommand("jump", jump)
-    API.registerCommand("p", printPosition)
+function onLoad(){
+    this.registerCommand("spawnable", spawnFakeEntity)
+    this.registerCommand("jump", jump)
+    this.registerCommand("p", printPosition)
 }
 
 function spawnFakeEntity(Command){
@@ -36,20 +33,20 @@ function spawnFakeEntity(Command){
     
     var EntityType = Command.getArgs()[0]
     var Sender = Command.getSender()
-    var UEID = API.generateUEID()
+    var UEID = this.generateUEID()
     
     if(EntityType == "Player"){
         var FakePlayer = new FakePlayerEntity(UEID, "hithere" + Math.floor(Math.random() * 1000), Sender.world)
     	
         FakePlayer.uuid = UUID.v3({namespace: UUID.namespace.dns, name: String(Math.random())})
-        API.emit(1, new LoginEvent(FakePlayer))
+        this.emit(1, new LoginEvent(FakePlayer))
     
     }else if(EntityType == "Zombie"){
-        API.emit(new EntitySpawnEvent(new ZombieEntity(UEID, Sender.world)))
+        this.emit(new EntitySpawnEvent(new ZombieEntity(UEID, Sender.world)))
     
     }else if(EntityType == "DroppedItem"){
         var StackToDrop = new ItemStack(new Item("iron_shovel"), 1)
-        API.emit(new EntitySpawnEvent(new DroppedItemEntity(UEID, StackToDrop, Sender.world)))
+        this.emit(new EntitySpawnEvent(new DroppedItemEntity(UEID, StackToDrop, Sender.world)))
     
     }else{
         Command.hasSender() && Command.getSender().tellRaw({
@@ -67,7 +64,7 @@ function spawnFakeEntity(Command){
 
 function jump(Command){
     var JumpHeight = Number(Command.getArgs()[0]) || 5
-    API.emit(1, new MoveEvent(Command.getSender(), Command.getSender().position.add(Vec3(0, JumpHeight, 0)), true));
+    this.emit(1, new MoveEvent(Command.getSender(), Command.getSender().position.add(Vec3(0, JumpHeight, 0)), true));
     return true
 }
 

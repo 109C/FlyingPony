@@ -1,15 +1,16 @@
 module.exports = onLoad
 
-function onLoad(API){
-    var CommandEvent = API.getEvent("CommandEvent")
+function onLoad(){
+    var CommandEvent = this.getEvent("CommandEvent")
     
-    API.registerCommand("sudo", function(Command){
+    this.registerCommand("sudo", function(Command){
         var args = Command.getArgs()
         
         if(args.length < 2){
             showHelp()
             return true
         }
+        
         
         var newPlayer = API.getPlayer(args[0])
         var commandName = args[1]
@@ -20,8 +21,8 @@ function onLoad(API){
             return true
         }
         
-        API.emit(new CommandEvent(newPlayer, commandName, newArgs))
-        Command.hasSender() && Command.getSender().tellRaw({text:"Executed command '" + commandName + "' as player '" + args[0] + "'", color: "green" })
+        this.emit(new CommandEvent(newPlayer, commandName, newArgs))
+        Command.hasSender() &&  Command.getSender().tellRaw({text:"Executed command '" + commandName + "' as player '" + args[0] + "'", color: "green" })
         return true
         
         function showHelp(){
