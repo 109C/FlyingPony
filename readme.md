@@ -36,3 +36,6 @@
   - [X] Custom entities
   - [ ] A server - plugin interface
   - [X] Modify the default actions
+  
+![Zombies flying upwards](http://i.imgur.com/p3WkKVc.png)
+*Development intensifies*

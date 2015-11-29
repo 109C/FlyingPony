@@ -1,7 +1,6 @@
 module.exports = function(Server, Event){
     var Player = Event.getPlayer()
     
-    
     var SentChunkThisTick = false
             
     var PlayerChunkX = Math.floor(Player.position.x / 16 )
@@ -19,15 +18,8 @@ module.exports = function(Server, Event){
             CurrentChunkZ = PlayerChunkZ + OffsetZ
             if(Player.sentChunks[ "" + CurrentChunkX + "|" + CurrentChunkZ] == true) continue
             
-            Player.rawWorld.getColumn(CurrentChunkX, CurrentChunkZ)
-                .then(function(Chunk){
-                        Player.sendChunkData(CurrentChunkX, CurrentChunkZ, Chunk.dump(), true)
-                      },
-                      function(err){
-                        JSON.stringify(err.stack.split("\n").forEach(function(s){
-                            console.log(s)
-                        }))
-                      })
+            var ChunkToSend =  Player.rawWorld.getColumn(CurrentChunkX, CurrentChunkZ)
+            Player.sendChunkData(CurrentChunkX, CurrentChunkZ, ChunkToSend.dump(), true)
             Player.sentChunks["" + CurrentChunkX + "|" + CurrentChunkZ] = true
             SentChunkThisTick = true
         }
@@ -47,6 +39,24 @@ module.exports = function(Server, Event){
                 Player.sendChunkData(ChunkX, ChunkZ, new Buffer(0), false)
                 delete Player.sentChunks[ChunkKey]
                 break;
+            }
+        }
+    }
+    
+    // Mark the player as not fully spawned if necessary, so we don't tick-freeze the client.
+    
+    Player.loadingChunks = SentChunkThisTick
+    
+    // Spawn the appropriate entities client side.
+    
+    if(Player.loadingChunks == false){
+        Player.calculateNearbyEntities()
+        
+        for(var EntityKey in Player.nearbyEntities){
+        	var Entity = Player.nearbyEntities[EntityKey]
+            if(Player.spawnedEntities[Entity.ueid] == undefined){
+                Player.sendEntitySpawn(Entity)
+                Player.spawnedEntities[Entity.ueid] = true
             }
         }
     }

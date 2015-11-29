@@ -6,6 +6,7 @@ var PrismarineWorld = require("./lib/prismarine-world")
 var PrismarineChunk = require("./lib/prismarine-chunk")
 var Vec3 = require("./lib/vec3")
 var UUID = require("./lib/uuid-1345")
+var PrismarineWorldSync = require("./lib/prismarine-world-sync")
 
 module.exports = {
     MinecraftProtocol: MinecraftProtocol,
@@ -13,5 +14,6 @@ module.exports = {
     PrismarineWorld: PrismarineWorld,
     PrismarineChunk: PrismarineChunk,
     Vec3: Vec3,
-    UUID: UUID
+    UUID: UUID,
+    PrismarineWorldSync: PrismarineWorldSync
 }

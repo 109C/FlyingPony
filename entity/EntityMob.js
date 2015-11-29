@@ -8,6 +8,9 @@ module.exports = function EntityMob(UEID, World){
     this.armor = new Inventory(4)
     this.heldItem = new Inventory(1)
     
+    this.isGravitational = function(){
+        return true
+    }
     this.isMob = function(){
         return true
     }

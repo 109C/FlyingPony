@@ -5,6 +5,7 @@ var Library = require("./Library.js")
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
 var PrismarineWorld = Library.PrismarineWorld
+var PrismarineWorldSync = Library.PrismarineWorldSync
 var Vec3 = Library.Vec3
 var UUID = Library.UUID
 
@@ -30,8 +31,9 @@ var EntityUseEvent = require("./events/EntityUseEvent.js")
 
 var Server = {}
 
-Server.lobbyWorld = new World(new PrismarineWorld(LobbyGenerator))
-Server.gameWorld = new World(new PrismarineWorld(GameMapGenerator))
+Server.lobbyWorld = new World(new PrismarineWorldSync(new PrismarineWorld(LobbyGenerator)))
+Server.gameWorld = new World(new PrismarineWorldSync(new PrismarineWorld(GameMapGenerator)))
+Server.worlds = [Server.lobbyWorld, Server.gameWorld]
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
 Server.PluginManager = new PluginManager()
@@ -78,9 +80,13 @@ Server.bootHandles.PlayerLogin = function(Client){
     Server.Scheduler.addEvent(1, new LoginEvent(CurrentPlayer))
 }
 Server.bootHandles.ClientConnection = function(Client){
-  if(Server.players[Client.username] != undefined){
-      Client.end("You are already logged in")
-  }
+    Client.on('error', function(e){
+        Server.Logger.log("A client had an error:")
+        Server.Logger.log(e)
+    })
+    if(Server.players[Client.username] != undefined){
+        Client.end("You are already logged in")
+    }
 }
 
 Server.initialize = function(){

@@ -19,6 +19,8 @@ module.exports = function Player(UEID, Client, World){
     this.username = Client.username
     this.uuid = Client.uuid
     this.sentChunks = {}
+    this.spawnedEntities = {}
+    this.loadingChunks = true
     
     this.heldSlot = 0
     this.inventory = new Inventory(36)
@@ -27,6 +29,9 @@ module.exports = function Player(UEID, Client, World){
     
     this.isPlayer = function(){
         return true
+    }
+    this.isGravitational = function(){
+        return false
     }
     this.sendInventory = function(){
         for(var slot = 0; slot < 4 * 9; slot++){

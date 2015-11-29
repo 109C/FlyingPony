@@ -8,6 +8,7 @@ module.exports = function(Server, Event){
     
     Player.ueid = Server.generateUEID()
     Player.world.players[Player.username] = Player
+    Player.world.entities[Player.ueid] = Player
     Server.players[Player.username] = Player
     
     Player.sendLoginInfo()
@@ -16,13 +17,6 @@ module.exports = function(Server, Event){
     Player.sendPlayerInfos()
     Player.sendInventory()
     
-    // For the player loggin in
-    for(PlayerKey in Player.world.players){
-        CurrentPlayer = Player.world.players[PlayerKey]
-        
-        // Wait for the client to react to the new player in the player list
-        Server.Scheduler.addEvent(100, new EntitySpawnEvent(CurrentPlayer))
-    }
     
     // For all the other players
     for(PlayerKey in Player.world.players){

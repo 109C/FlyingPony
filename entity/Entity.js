@@ -3,6 +3,9 @@ var Library = require("../Library.js")
 var Vec3 = Library.Vec3
 var UUID = Library.UUID
 var Assert = require("../util/Assert.js")
+var Intersects = require("../util/Intersects.js")
+var MoveEvent = require("../events/MoveEvent.js")
+var LookEvent = require("../events/LookEvent.js")
 
 module.exports = function Entity(UEID, World){
     Assert(typeof UEID == 'number', "UEID must be a number")
@@ -12,6 +15,8 @@ module.exports = function Entity(UEID, World){
     
     this.position = new Vec3(0, 16, 0)
     this.velocity = new Vec3(0, 0, 0)
+    this.terminalVelocity = 4
+    this.gravityVelocity = 0.08
     this.uuid = "0-0-0-0-0"
     this.ueid = UEID
     this.yaw = 0
@@ -19,11 +24,19 @@ module.exports = function Entity(UEID, World){
     this.world = World
     this.rawWorld = World.PrismarineWorld
     
+    this.nearbyEntities = []
+    this.nearbyPlayers = []
+    this.nearbyRange = 64
+    
     this.tick = function(){
-        if(this.isGravitational()){
-            this.doGravity()
-        }
-        this.doPhysics()
+        var TickEvents = []
+        var Event;
+        
+        if(Event = this.doAI()) TickEvents.push(Event);
+        if(this.isGravitational()) this.doGravity();
+        if(Event = this.doPhysics()) TickEvents.push(Event);
+        
+        return TickEvents
     }
     this.isPlayer = function(){
         return false
@@ -54,33 +67,57 @@ module.exports = function Entity(UEID, World){
     }
     this.changeWorld = function(NewWorld){}
     
-    this.doGravity = function(){}
-    this.doPhysics = function(){}
+    this.doGravity = function(){
+        var BlocksBelow = []
+        for(var i = -Math.ceil(this.getPhysicalWidth()); i < Math.ceil(this.getPhysicalWidth()); i++){
+            for(var j = -Math.ceil(this.getPhysicalWidth()); j < Math.ceil(this.getPhysicalWidth()); j++){
+                var BlockBelow = this.rawWorld.getBlock(new Vec3(i, Math.floor(this.position.y), j))
+                BlockBelow.position = new Vec3(i, Math.floor(this.position.y), j)
+                BlocksBelow.push(BlockBelow)
+            }
+        }
+        for(BlockKey in BlocksBelow){
+            var Block = BlocksBelow[BlockKey]
+//             var DoesIntersect = Intersects({
+//                 x1: Block.position.x,
+//                 y1: Block.position.z,
+//                 x2: Block.position.x + 1,
+//                 y2: Block.position.z + 1
+//             },{
+//                 x1: -Math.ceil(this.getPhysicalWidth()),
+//                 y1: -Math.ceil(this.getPhysicalWidth()),
+//                 x2: Math.ceil(this.getPhysicalWidth()),
+//                 y2: Math.ceil(this.getPhysicalWidth())
+//             })
+            if(Block.boundingBox != "empty"){
+                this.velocity.y = 0
+                return;
+            }
+        }
+        this.velocity.y -= this.gravityVelocity
+    }
+    this.doPhysics = function(){
+        return new MoveEvent(this, this.position.add(this.velocity), false)
+    }
     this.doAI = function(){}
     
     this.getDistanceFrom = function(Entity){
         return this.position.distanceTo(Entity.position)
     }
-    this.getNearbyEntities = function(MaxDistance){
-        var NearEntities = []
+    this.calculateNearbyEntities = function(MaxDistance){
+        this.neabyRange = MaxDistance || this.nearbyRange
+        this.nearbyEntities = {}
+        this.nearbyPlayers = {}
+        
         for(EntityKey in this.world.entities){
-            var Entity = this.world.entities[EntityKey]
+            var CurrentEntity = this.world.entities[EntityKey]
             
-            if(this.getDistanceFrom(CurrentEntity) <= MaxDistance && this != CurrentEntity){
-                NearPlayers.push(CurrentEntity)
+            if(this.getDistanceFrom(CurrentEntity) <= this.nearbyRange && this != CurrentEntity){
+                this.nearbyEntities[CurrentEntity.ueid] = CurrentEntity
+                if(CurrentEntity.isPlayer()){
+                    this.nearbyPlayers[CurrentEntity.username] = CurrentEntity
+                }
             }
         }
-        return NearEntities
-    }
-    this.getNearbyPlayers = function(MaxDistance){
-    	var NearPlayers = []
-        for(PlayerKey in this.world.players){
-            var CurrentPlayer = this.world.players[PlayerKey]
-            
-            if(this.getDistanceFrom(CurrentPlayer) <= MaxDistance && this != CurrentPlayer){
-                NearPlayers.push(CurrentPlayer)
-            }
-        }
-        return NearPlayers
     }
 }

@@ -17,8 +17,21 @@ var PlayerUpdateEvent = require("../events/PlayerUpdateEvent.js")
 module.exports = function(Server){
     
     // Add all the players to be ticked.
-    for(CurrentPlayer in Server.players){
+    for(var CurrentPlayer in Server.players){
         Server.Scheduler.addEvent(1, new PlayerUpdateEvent(Server.players[CurrentPlayer]))
+    }
+    
+    // Add all the entities, in all the worlds that are not players to be ticked.
+    for(var WorldKey in Server.worlds){
+        var World = Server.worlds[WorldKey]
+        for(var EntityKey in World.entities){
+            Entity = World.entities[EntityKey]
+            
+            Entity.tick().forEach(function(Event){
+                Server.Scheduler.addEvent(1, Event)
+            })
+            
+        }
     }
     
     
@@ -34,7 +47,7 @@ module.exports = function(Server){
         }
     }
     
-    for(EventIndex in Events){
+    for(var EventIndex in Events){
         var Event = Events[EventIndex]
         var EventType = Event.getType()
         

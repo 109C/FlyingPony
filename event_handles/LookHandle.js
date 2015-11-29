@@ -3,9 +3,12 @@ module.exports = function(Server, Event){
     Entity.pitch = Event.getPitch()
     Entity.yaw = Event.getYaw()
     
-    Entity.getNearbyPlayers(64).forEach(function(Player){
+    Entity.calculateNearbyEntities()
+    
+    for(var key in Entity.nearbyPlayers){
+        var Player = Entity.nearbyPlayers[key]
         Player.sendEntityPosition(Entity)
-    })
+    }
     
     if(Entity.isPlayer() && Event.isTeleport()){
         Entity.updateClientPosition()
