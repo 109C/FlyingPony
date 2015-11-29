@@ -3,7 +3,7 @@ var Library = require("../Library.js")
 var Vec3 = Library.Vec3
 var UUID = Library.UUID
 var Assert = require("../util/Assert.js")
-var Intersects = require("../util/Intersects.js")
+//var Intersects = require("../util/Intersects.js")
 var MoveEvent = require("../events/MoveEvent.js")
 var LookEvent = require("../events/LookEvent.js")
 
