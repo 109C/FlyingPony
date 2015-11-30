@@ -97,6 +97,14 @@ module.exports = function Entity(UEID, World){
         this.velocity.y -= this.gravityVelocity
     }
     this.doPhysics = function(){
+        var ZeroVector = new Vec3(0, 0, 0)
+        var VelocityLength = this.velocity.distanceTo(ZeroVector)
+        
+        // If we're going faster than we can, slow down.
+        if(VelocityLength > this.terminalVelocity){
+            var Scalar = this.terminalVelocity / VelocityLength
+            this.velocity.scaled(Scalar)
+        }
         return new MoveEvent(this, this.position.add(this.velocity), false)
     }
     this.doAI = function(){}
