@@ -3,7 +3,7 @@ var Library = require("../Library.js")
 var Vec3 = Library.Vec3
 var UUID = Library.UUID
 var Assert = require("../util/Assert.js")
-//var Intersects = require("../util/Intersects.js")
+var Intersects = require("../util/Intersects.js")
 var MoveEvent = require("../events/MoveEvent.js")
 var LookEvent = require("../events/LookEvent.js")
 
@@ -78,18 +78,18 @@ module.exports = function Entity(UEID, World){
         }
         for(BlockKey in BlocksBelow){
             var Block = BlocksBelow[BlockKey]
-//             var DoesIntersect = Intersects({
-//                 x1: Block.position.x,
-//                 y1: Block.position.z,
-//                 x2: Block.position.x + 1,
-//                 y2: Block.position.z + 1
-//             },{
-//                 x1: -Math.ceil(this.getPhysicalWidth()),
-//                 y1: -Math.ceil(this.getPhysicalWidth()),
-//                 x2: Math.ceil(this.getPhysicalWidth()),
-//                 y2: Math.ceil(this.getPhysicalWidth())
-//             })
-            if(Block.boundingBox != "empty"){
+            var DoesIntersect = Intersects({
+                x1: Block.position.x,
+                y1: Block.position.z,
+                x2: Block.position.x + 1,
+                y2: Block.position.z + 1
+            },{
+                x1: this.position.x - this.getPhysicalWidth() / 2,
+                y1: this.position.z - this.getPhysicalWidth() / 2,
+                x2: this.position.x + this.getPhysicalWidth() / 2,
+                y2: this.position.z + this.getPhysicalWidth() / 2,
+            })
+            if(Block.boundingBox != "empty" && DoesIntersect){
                 this.velocity.y = 0
                 return;
             }
