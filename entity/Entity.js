@@ -34,7 +34,7 @@ module.exports = function Entity(UEID, World){
         
         if(Event = this.doAI()) TickEvents.push(Event);
         if(this.isGravitational()) this.doGravity();
-        if(Event = this.doPhysics()) TickEvents.push(Event);
+        if(this.isGravitational() && (Event = this.doPhysics())) TickEvents.push(Event);
         
         return TickEvents
     }
