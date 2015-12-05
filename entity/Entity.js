@@ -4,8 +4,8 @@ var Vec3 = Library.Vec3
 var UUID = Library.UUID
 var Assert = require("../util/Assert.js")
 var Intersects = require("../util/Intersects.js")
+var Physics = require("../util/Physics.js")
 var MoveEvent = require("../events/MoveEvent.js")
-var LookEvent = require("../events/LookEvent.js")
 
 module.exports = function Entity(UEID, World){
     Assert(typeof UEID == 'number', "UEID must be a number")
@@ -97,6 +97,8 @@ module.exports = function Entity(UEID, World){
         this.velocity.y -= this.gravityVelocity
     }
     this.doPhysics = function(){
+        Physics.calculateDrag(this.velocity)
+        
         var ZeroVector = new Vec3(0, 0, 0)
         var VelocityLength = this.velocity.distanceTo(ZeroVector)
         
