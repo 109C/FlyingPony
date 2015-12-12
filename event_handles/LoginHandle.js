@@ -19,8 +19,8 @@ module.exports = function(Server, Event){
     
     
     // For all the other players
-    for(PlayerKey in Player.world.players){
-        CurrentPlayer = Player.world.players[PlayerKey]
+    for(var PlayerKey in Player.world.players){
+        var CurrentPlayer = Player.world.players[PlayerKey]
         if(CurrentPlayer === Player) continue
         
         CurrentPlayer.sendPlayerInfos()

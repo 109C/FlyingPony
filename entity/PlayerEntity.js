@@ -44,7 +44,7 @@ module.exports = function Player(UEID, Client, World){
     }
     this.sendPlayerInfos = function(){
     	var PlayerInfos = []
-        for(CurrentPlayerKey in this.world.players){
+        for(var CurrentPlayerKey in this.world.players){
             var CurrentPlayer = this.world.players[CurrentPlayerKey]
             
             this.Client.write('player_info', {

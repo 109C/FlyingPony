@@ -25,7 +25,7 @@ module.exports = function(Server){
     for(var WorldKey in Server.worlds){
         var World = Server.worlds[WorldKey]
         for(var EntityKey in World.entities){
-            Entity = World.entities[EntityKey]
+            var Entity = World.entities[EntityKey]
             
             Entity.tick().forEach(function(Event){
                 Server.Scheduler.addEvent(1, Event)
@@ -39,7 +39,7 @@ module.exports = function(Server){
     var Events = Server.Scheduler.getEvents()
     
     // Let the plugins have first pick, and remove the event if it's canceled
-    for(EventIndex in Events){
+    for(var EventIndex in Events){
         var Event = Events[EventIndex]
         
         if(Server.PluginManager.triggerEvent(Server, Event)){

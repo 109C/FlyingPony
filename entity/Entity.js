@@ -76,7 +76,7 @@ module.exports = function Entity(UEID, World){
                 BlocksBelow.push(BlockBelow)
             }
         }
-        for(BlockKey in BlocksBelow){
+        for(var BlockKey in BlocksBelow){
             var Block = BlocksBelow[BlockKey]
             var DoesIntersect = Intersects({
                 x1: Block.position.x,
