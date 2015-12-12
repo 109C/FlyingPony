@@ -5,7 +5,7 @@ module.exports = {
 function Convert360To256(Yaw360){
     var Yaw256 = Math.floor(((Yaw360 % 360) / 360) * 255)
     
-    if(Yaw256 > 128){
+    if(Yaw256 > 127){
         Yaw256 -= 255
     }
     if(Yaw256 < -128){

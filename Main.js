@@ -91,9 +91,11 @@ Server.bootHandles.PlayerLogin = function(Client){
     Server.Scheduler.addEvent(1, new LoginEvent(CurrentPlayer))
 }
 Server.bootHandles.ClientConnection = function(Client){
-    Client.on('error', function(e){
+    Client.on('error', function(ErrorMessage){
         Server.Logger.log("A client had an error:")
-        Server.Logger.log(e)
+        Server.Logger.log(ErrorMessage)
+        Server.Logger.log("Something went wrong, shutting down server.")
+        throw ErrorMessage;
     })
     if(Server.players[Client.username] != undefined){
         Client.end("You are already logged in")

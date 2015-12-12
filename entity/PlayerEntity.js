@@ -122,12 +122,12 @@ module.exports = function Player(UEID, Client, World){
             y: Entity.position.y * 32,
             z: Entity.position.z * 32,
             yaw: Convert.Convert360To256(Entity.yaw),
-            pitch: Entity.pitch,
+            pitch: Convert.Convert360To256(Entity.pitch),
             onGround: false
         })
         this.Client.write('entity_head_rotation', {
             entityId: Entity.ueid,
-            headYaw: Entity.yaw
+            headYaw: Convert.Convert360To256(Entity.yaw)
         })
     }
     this.sendLoginInfo = function(){
