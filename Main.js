@@ -60,17 +60,17 @@ Server.bootHandles.PlayerLogin = function(Client){
         Server.Scheduler.addEvent(1, new LogoutEvent(CurrentPlayer))
     })
     Client.on('chat', function(Packet){
-        Assert(data.message.length <= 119, "chat: Invalid chat message, too long")
+        Assert(Packet.message.length <= 119, "chat: Invalid chat message, too long")
         Server.Scheduler.addEvent(1, new IncomingMessageEvent(CurrentPlayer, Packet.message))
     })
     Client.on('position', function(Packet){
-        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z)), false)
+        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z), false))
     })
     Client.on('look', function(Packet){
         Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, Packet.pitch, Packet.yaw, false))
     })
     Client.on('position_look', function(Packet){
-        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z)), false)
+        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z), false))
         Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, Packet.pitch, Packet.yaw, false))
     })
     Client.on('use_entity', function(Packet){

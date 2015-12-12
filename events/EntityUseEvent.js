@@ -1,7 +1,12 @@
 var Event = require("./Event.js")
 var Inheritance = require("../util/Inheritance.js")
+var Assert = require("../util/Assert.js")
 
 module.exports = function EntityUseEvent(EntityUser, EntityUsed, MouseMode){
+    Assert(typeof EntityUser == 'object', "Invalid user entity")
+    Assert(typeof EntityUsed == 'object', "Invalid used entity")
+    Assert(typeof MouseMode == 'number', "Invalid mouse mode")
+    
     Inheritance(new Event(), this)
     
     this._user = EntityUser

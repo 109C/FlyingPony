@@ -12,8 +12,7 @@ for(Key in EventDirList){
     if(EventPath == ".DS_Store") continue;
     
     var Event = require(path.resolve(__dirname, "../events") + "/" + EventPath)
-    var InstanceOfEvent = new Event()
-    Events[InstanceOfEvent.getType()] = Event
+    Events[EventPath.substr(0, EventPath.length - 3)] = Event
 }
 
 module.exports = function PluginInterface(Server, Plugin){

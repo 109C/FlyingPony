@@ -3,10 +3,10 @@ var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
 
 module.exports = function PlayerDigEvent(Entity, Position, Face, Status){
-    Assert(typeof Entity == 'object', "Invalid entity (Wrong type)")
-    Assert(typeof Position == 'object', "Invalid position (Wrong type)")
-    Assert(typeof Face == 'number', "Invalid face (Wrong type)")
-    Assert(typeof Status == 'number', "Invalid action status (Wrong type)")
+    Assert(typeof Entity == 'object', "Invalid entity)")
+    Assert(typeof Position == 'object', "Invalid position")
+    Assert(typeof Face == 'number', "Invalid face")
+    Assert(typeof Status == 'number', "Invalid action status")
     
     Inheritance(new Event(), this)
     

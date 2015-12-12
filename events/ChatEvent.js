@@ -1,7 +1,12 @@
 var Event = require("./Event.js")
 var Inheritance = require("../util/Inheritance.js")
+var Assert = require("../util/Assert.js")
 
 module.exports = function ChatEvent(SenderPlayer, DestinationPlayer, Message){
+    Assert(typeof SenderPlayer == 'object' || SenderPlayer == undefined, "Invalid sender (Should be player or undefined)")
+    Assert(typeof DestinationPlayer == 'object' || DestinationPlayer == undefined, "Invalid destination (Should be player or undefined)")
+    Assert(typeof Message == 'string' || typeof Message == 'object', "Invalid message")
+    
     Inheritance(new Event(), this)
     
     this._Sender = SenderPlayer
