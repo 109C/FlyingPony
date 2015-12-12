@@ -59,24 +59,24 @@ Server.bootHandles.PlayerLogin = function(Client){
     Client.on('end', function(){
         Server.Scheduler.addEvent(1, new LogoutEvent(CurrentPlayer))
     })
-    Client.on('chat', function(data){
+    Client.on('chat', function(Packet){
         Assert(data.message.length <= 119, "chat: Invalid chat message, too long")
-        Server.Scheduler.addEvent(1, new IncomingMessageEvent(CurrentPlayer, data.message))
+        Server.Scheduler.addEvent(1, new IncomingMessageEvent(CurrentPlayer, Packet.message))
     })
-    Client.on('position', function(packet){
-        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(packet.x, packet.y, packet.z)), false)
+    Client.on('position', function(Packet){
+        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z)), false)
     })
-    Client.on('look', function(packet){
-        Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, packet.pitch, packet.yaw, false))
+    Client.on('look', function(Packet){
+        Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, Packet.pitch, Packet.yaw, false))
     })
-    Client.on('position_look', function(packet){
-        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(packet.x, packet.y, packet.z)), false)
-        Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, packet.pitch, packet.yaw, false))
+    Client.on('position_look', function(Packet){
+        Server.Scheduler.addEvent(1, new MoveEvent(CurrentPlayer, new Vec3(Packet.x, Packet.y, Packet.z)), false)
+        Server.Scheduler.addEvent(1, new LookEvent(CurrentPlayer, Packet.pitch, Packet.yaw, false))
     })
-    Client.on('use_entity', function(packet){
-        Assert(typeof CurrentPlayer.world.entities[packet.target] == 'object', "use_entity: Invalid ueid")
-        Assert(packet.mouse == 0 || packet.mouse == 1 || packet.mouse == 2, "use_entity: Invalid mouse mode")
-        Server.Scheduler.addEvent(1, new EntityUseEvent(CurrentPlayer, CurrentPlayer.world.entities[packet.target], packet.mouse))
+    Client.on('use_entity', function(Packet){
+        Assert(typeof CurrentPlayer.world.entities[Packet.target] == 'object', "use_entity: Invalid ueid")
+        Assert(Packet.mouse == 0 || Packet.mouse == 1 || Packet.mouse == 2, "use_entity: Invalid mouse mode")
+        Server.Scheduler.addEvent(1, new EntityUseEvent(CurrentPlayer, CurrentPlayer.world.entities[Packet.target], Packet.mouse))
     })
     Client.on('block_dig', function(Packet){
         // Dig start, Dig abort, Dig finish.
