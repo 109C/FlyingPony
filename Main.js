@@ -76,12 +76,16 @@ Server.bootHandles.PlayerLogin = function(Client){
     Client.on('use_entity', function(Packet){
         Assert(typeof CurrentPlayer.world.entities[Packet.target] == 'object', "use_entity: Invalid ueid")
         Assert(Packet.mouse == 0 || Packet.mouse == 1 || Packet.mouse == 2, "use_entity: Invalid mouse mode")
+        
         Server.Scheduler.addEvent(1, new EntityUseEvent(CurrentPlayer, CurrentPlayer.world.entities[Packet.target], Packet.mouse))
     })
     Client.on('block_dig', function(Packet){
+        Assert(Packet.status >= 0 && Packet.status <= 5, "block_dig: Invalid status (Action type)")
+        Assert(Packet.face >= 0 && Packet.face <= 5, "block_dig: Invalid block face")
+        
         // Dig start, Dig abort, Dig finish.
         if(Packet.status == 0 || Packet.status == 1 || Packet.status == 2){
-            Server,Scheduler.addEvent(1, new PlayerDigEvent(CurrentPlayer, Packet.location, Packet.status))
+            Server,Scheduler.addEvent(1, new PlayerDigEvent(CurrentPlayer, Packet.location, Packet.face, Packet.status))
         }
     })
     Server.Scheduler.addEvent(1, new LoginEvent(CurrentPlayer))
