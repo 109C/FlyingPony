@@ -28,6 +28,7 @@ var IncomingMessageEvent = require("./events/IncomingMessageEvent.js")
 var MoveEvent = require("./events/MoveEvent.js")
 var LookEvent = require("./events/LookEvent.js")
 var EntityUseEvent = require("./events/EntityUseEvent.js")
+var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
@@ -76,6 +77,12 @@ Server.bootHandles.PlayerLogin = function(Client){
         Assert(typeof CurrentPlayer.world.entities[packet.target] == 'object', "use_entity: Invalid ueid")
         Assert(packet.mouse == 0 || packet.mouse == 1 || packet.mouse == 2, "use_entity: Invalid mouse mode")
         Server.Scheduler.addEvent(1, new EntityUseEvent(CurrentPlayer, CurrentPlayer.world.entities[packet.target], packet.mouse))
+    })
+    Client.on('block_dig', function(Packet){
+        // Dig start, Dig abort, Dig finish.
+        if(Packet.status == 0 || Packet.status == 1 || Packet.status == 2){
+            Server,Scheduler.addEvent(1, new PlayerDigEvent(CurrentPlayer, Packet.location, Packet.status))
+        }
     })
     Server.Scheduler.addEvent(1, new LoginEvent(CurrentPlayer))
 }
