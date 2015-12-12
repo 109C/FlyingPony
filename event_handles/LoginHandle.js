@@ -26,7 +26,11 @@ module.exports = function(Server, Event){
         CurrentPlayer.sendPlayerInfos()
     }
     
-    var ChatMessage = new ChatEvent(undefined, undefined, {text: Player.username + " joined the game", color: "yellow"})
-    Server.Scheduler.addEvent(1, ChatMessage)
+    var JoinMessage = new ChatEvent(undefined, undefined, {text: Player.username + " joined the game", color: "yellow"})
+    var PlayerSpawn = new EntitySpawnEvent(Player)
+    
+    Server.Scheduler.addEvent(1, JoinMessage)
+    Server.Scheduler.addEvent(1, PlayerSpawn)
+    
     Server.Logger.log("Player '" +Player.username+ "' joined.")
 }

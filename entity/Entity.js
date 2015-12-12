@@ -1,4 +1,5 @@
 var Library = require("../Library.js")
+var Inheritance = require("../util/Inheritance.js")
 
 var Vec3 = Library.Vec3
 var UUID = Library.UUID
@@ -12,6 +13,8 @@ module.exports = function Entity(UEID, World){
     Assert(typeof World == 'object', "The world must be an object or instance of World")
     Assert(typeof World.players == 'object', "The world's player map must be an object")
     Assert(typeof World.PrismarineWorld == 'object', "The world's prismarine world must be an object or instance of PrismarineWorld")
+    
+    Inheritance({}, this)
     
     this.position = new Vec3(0, 16, 0)
     this.velocity = new Vec3(0, 0, 0)
