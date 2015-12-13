@@ -1,8 +1,12 @@
 //
 
+var Library = require("../Library.js")
+var BlockData = Library.internal.blocks
+
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
 var Convert = require("../util/Convert.js")
+var Validate = require("../util/Validate.js")
 
 var Entity = require("./Entity.js")
 var Inventory = require("../items/Inventory.js")
@@ -26,6 +30,8 @@ module.exports = function Player(UEID, Client, World){
     this.inventory = new Inventory(36)
     this.craftingArea = new Inventory(4)
     this.craftingOutput = new Inventory(1)
+    this.diggingBlock = null
+    this.diggingTimeLeft = null
     
     this.isPlayer = function(){
         return true
@@ -33,6 +39,51 @@ module.exports = function Player(UEID, Client, World){
     this.isGravitational = function(){
         return false
     }
+    this.isDigging = function(){
+        return this.diggingBlock == undefined ? false : true
+    }
+    this.resetDigging = function(){
+        this.diggingBlock = null
+        this.diggingTimeLeft = null
+    }
+    this.startDigging = function(Position){
+        Assert(Validate.isVec3(Position), "Invalid position for block dig")
+        
+        var DiggingBlock = this.rawWorld.getBlock(Position)
+        if(DiggingBlock.diggable == true){
+            this.diggingBlock = Position
+        }else{
+            this.resetDigging()
+        }
+        
+        // From the minecraft wiki.
+        var BaseTime = DiggingBlock.hardness * 1.5
+        if(DiggingBlock.harvest && DiggingBlock.harvestTools[this.inventory.getSlot(this.heldSlot).itemType.id]) BaseTime *= 3.33;
+        // Decrease dig time if the tool is enchanted.
+        // Decrease dig time if the tool is a special tool.
+        // Decrease dig time if we have haste.
+        // Increase dig time if we have mining fatigue.
+        // Increase dig time if we're underwater.
+        this.diggingTimeLeft = BaseTime
+    }
+    this.finishDigging = function(Position){
+        Assert(Validate.isVec3(Position), "Invalid position for block dig")
+        if(this.diggingBlock && this.diggingBlock.equals(Position) && this.diggingTimeLeft < 1){
+            // Trigger block update for all the clients
+            // Spawn drop
+        }else{
+            this.disconnect("You broke blocks too fast!")
+        }
+    }
+    var ParentTick = this.tick
+    this.tick = function(){
+        if(this.diggingTimeLeft != null && this.diggingTimeLeft > 1){
+            this.diggingTimeLeft -= 0.05
+            if(this.diggingTimeLeft < 0) this.diggingTimeLeft = 0;
+        }
+        return ParentTick.bind(this)();
+    }
+    
     this.sendInventory = function(){
         for(var slot = 0; slot < 4 * 9; slot++){
             this.Client.write('set_slot', {

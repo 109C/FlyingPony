@@ -2,21 +2,21 @@ var Event = require("./Event.js")
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
 
-module.exports = function PlayerDigEvent(Entity, Position, Face, Status){
-    Assert(typeof Entity == 'object', "Invalid entity)")
+module.exports = function PlayerDigEvent(Player, Position, Face, Status){
+    Assert(typeof Player == 'object', "Invalid player)")
     Assert(typeof Position == 'object', "Invalid position")
     Assert(typeof Face == 'number', "Invalid face")
     Assert(typeof Status == 'number', "Invalid action status")
     
     Inheritance(new Event(), this)
     
-    this._entity = Entity
+    this._player = Player
     this._position = Position
     this._face = Face
     this._status = Status
     
-    this.getEntity = function(){
-        return this._entity
+    this.getDigger = function(){
+        return this._player
     }
     this.getPosition = function(){
         return this._position

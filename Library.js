@@ -8,6 +8,13 @@ var Vec3 = require("./lib/vec3")
 var UUID = require("./lib/uuid-1345")
 var PrismarineWorldSync = require("./lib/prismarine-world-sync")
 
+var BlockIdToBlock = {}
+
+for(var BlockKey in MinecraftData.blocks){
+    var CurrentBlock = MinecraftData.blocks[BlockKey]
+    BlockIdToBlock[CurrentBlock.id] = CurrentBlock
+}
+
 module.exports = {
     MinecraftProtocol: MinecraftProtocol,
     MinecraftData: MinecraftData,
@@ -15,5 +22,8 @@ module.exports = {
     PrismarineChunk: PrismarineChunk,
     Vec3: Vec3,
     UUID: UUID,
-    PrismarineWorldSync: PrismarineWorldSync
+    PrismarineWorldSync: PrismarineWorldSync,
+    internal: {
+        blocks: BlockIdToBlock
+    }
 }
