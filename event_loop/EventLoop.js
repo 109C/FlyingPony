@@ -11,6 +11,7 @@ var EntitySpawnHandle = require("../event_handles/EntitySpawnHandle.js")
 var MoveHandle = require("../event_handles/MoveHandle.js")
 var LookHandle = require("../event_handles/LookHandle.js")
 var EntityUseHandle = require("../event_handles/EntityUseHandle.js")
+var PlayerDigHandle = require("../event_handles/PlayerDigHandle.js")
 
 var PlayerUpdateEvent = require("../events/PlayerUpdateEvent.js")
 
@@ -77,10 +78,15 @@ module.exports = function(Server){
             
         }else if(EventType == "EntitySpawnEvent"){
             EntitySpawnHandle(Server, Event)
+            
         }else if(EventType == "LookEvent"){
             LookHandle(Server, Event)
-        }else if (EventType == "EntityUseEvent"){
+            
+        }else if(EventType == "EntityUseEvent"){
             EntityUseHandle(Server, Event)
+            
+        }else if(EventType == "PlayerDigEvent"){
+            PlayerDigHandle(Server, Event)
         }
     }
     
