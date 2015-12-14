@@ -27,9 +27,10 @@
   - [ ] Inventory
   - [ ] Block breaking / Block placement
 - [ ] Entities
-  - [ ] Mobs (Cow, Zombie, etc)
-  - [ ] Drops
-  - [ ] Custom entity classes
+  - [X] Mobs (Cow, Zombie, etc)
+  - [ ] Mob AI.
+  - [X] Drops
+  - [X] Custom entity classes
   - [ ] Entity interaction
 - [ ] Plugins
   - [X] Custom events
@@ -38,4 +39,4 @@
   - [X] Modify the default actions
   
 ![Zombies flying upwards](http://i.imgur.com/p3WkKVc.png)
-*Development intensifies*
+*Development... continues.*
