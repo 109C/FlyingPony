@@ -32,8 +32,8 @@ var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
-Server.lobbyWorld = new World(new PrismarineWorldSync(new PrismarineWorld(LobbyGenerator)))
-Server.gameWorld = new World(new PrismarineWorldSync(new PrismarineWorld(GameMapGenerator)))
+Server.lobbyWorld = new World(Server, new PrismarineWorldSync(new PrismarineWorld(LobbyGenerator)))
+Server.gameWorld = new World(Server, new PrismarineWorldSync(new PrismarineWorld(GameMapGenerator)))
 Server.worlds = [Server.lobbyWorld, Server.gameWorld]
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()

@@ -47,7 +47,7 @@ function spawnFakeEntity(Command){
         this.emit(new EntitySpawnEvent(NewZombie))
     
     }else if(EntityType == "DroppedItem"){
-        var StackToDrop = new ItemStack(new Item("iron_shovel"), 1)
+        var StackToDrop = new ItemStack("iron_shovel", 1)
         this.emit(new EntitySpawnEvent(new DroppedItemEntity(UEID, StackToDrop, Sender.world)))
     
     }else{

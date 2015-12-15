@@ -6,8 +6,18 @@ var Assert = require("../util/Assert.js")
 var IdToItem = {}
 var NameToItem = {}
 
+// Add items.json
 for(ItemPlace in MinecraftData.items){
     var CurrentItem = MinecraftData.items[ItemPlace]
+    
+    IdToItem[Number(CurrentItem.id)] = CurrentItem
+    NameToItem[CurrentItem.name] = CurrentItem
+}
+
+// Add blocks.json
+for(ItemPlace in MinecraftData.blocks){
+    var CurrentItem = MinecraftData.blocks[ItemPlace]
+    
     IdToItem[Number(CurrentItem.id)] = CurrentItem
     NameToItem[CurrentItem.name] = CurrentItem
 }
@@ -18,7 +28,5 @@ module.exports = function Item(ItemIdOrName){
     
     var ItemInfo = IdToItem[ItemIdOrName] ? IdToItem[ItemIdOrName] : NameToItem[ItemIdOrName]
     
-    this.id = ItemInfo.id
-    this.name = ItemInfo.name
-    this.displayName = ItemInfo.displayName
+    return ItemInfo
 }

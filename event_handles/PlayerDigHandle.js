@@ -6,7 +6,7 @@ module.exports = function(Server, Event){
     // Update the digging player.
     
     if(Event.isStart()){
-        Player.startDigging(Event.getPosition())
+        Player.startDigging(Event.getPosition(), Event.getFace())
     }else if(Event.isAbort()){
         Player.resetDigging()
     }else if(Event.isFinish()){

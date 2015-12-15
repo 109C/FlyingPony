@@ -1,10 +1,11 @@
 var Assert = require("../util/Assert.js")
+var Item = require("./Item.js")
 
 module.exports = function ItemStack(ItemType, StackSize){
-    Assert(typeof ItemType == 'object', "Item has to be an object or an instance of Item")
+    Assert(typeof ItemType == 'object' || typeof ItemType == 'string', "ItemType must be a prismarine block or item id / name")
     Assert(typeof StackSize == 'number', "StackSize has to be a number")
     
-    this.itemType = ItemType
+    this.itemType = typeof ItemType == 'object' ? ItemType : Item(ItemType)
     this.stackSize = StackSize
     
     this.isEmpty = function(){
@@ -19,7 +20,7 @@ module.exports = function ItemStack(ItemType, StackSize){
             return {
                 blockId: this.itemType.id,
                 itemCount: this.stackSize,
-                itemDamage: 0
+                itemDamage: undefined
             }
         }
     }

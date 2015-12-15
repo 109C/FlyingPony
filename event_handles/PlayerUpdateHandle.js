@@ -54,7 +54,7 @@ module.exports = function(Server, Event){
         
         for(var EntityKey in Player.nearbyEntities){
         	var Entity = Player.nearbyEntities[EntityKey]
-            if(Player.spawnedEntities[Entity.ueid] == undefined){
+            if(Player.spawnedEntities[Entity.ueid] == undefined && Entity.position.y > 0){
                 Player.sendEntitySpawn(Entity)
                 Player.spawnedEntities[Entity.ueid] = true
             }

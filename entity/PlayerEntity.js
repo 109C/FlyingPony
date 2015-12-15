@@ -1,7 +1,7 @@
 //
 
 var Library = require("../Library.js")
-var BlockData = Library.internal.blocks
+var nameToBlock = Library.internal.blockNameToBlock
 
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
@@ -9,7 +9,14 @@ var Convert = require("../util/Convert.js")
 var Validate = require("../util/Validate.js")
 
 var Entity = require("./Entity.js")
+var DroppedItemEntity = require("./DroppedItemEntity.js")
+var ItemStack = require("../items/ItemStack.js")
+var Item = require("../items/Item.js")
 var Inventory = require("../items/Inventory.js")
+
+var PlayerDigEvent = require("../events/PlayerDigEvent.js")
+var LogoutEvent = require("../events/LogoutEvent.js")
+var EntitySpawnEvent = require("../events/EntitySpawnEvent.js")
 
 module.exports = function Player(UEID, Client, World){
     Assert(typeof Client == 'object', "Client must be an object or instance of NMP client")
@@ -31,7 +38,9 @@ module.exports = function Player(UEID, Client, World){
     this.craftingArea = new Inventory(4)
     this.craftingOutput = new Inventory(1)
     this.diggingBlock = null
+    this.diggingBlockFace = null
     this.diggingTimeLeft = null
+    this.gamemode = 0
     
     this.isPlayer = function(){
         return true
@@ -44,44 +53,74 @@ module.exports = function Player(UEID, Client, World){
     }
     this.resetDigging = function(){
         this.diggingBlock = null
+        this.diggingBlockFace = null
         this.diggingTimeLeft = null
     }
-    this.startDigging = function(Position){
+    this.startDigging = function(Position, Face){
         Assert(Validate.isVec3(Position), "Invalid position for block dig")
         
+        this.diggingBlock = Position
+        this.diggingBlockFace = Face
         var DiggingBlock = this.rawWorld.getBlock(Position)
-        if(DiggingBlock.diggable == true){
-            this.diggingBlock = Position
-        }else{
+        
+        // Check if we can dig at all
+        if(this.gamemode == 2 || this.gamemode == 3){
             this.resetDigging()
+            return;
         }
         
-        // From the minecraft wiki.
-        var BaseTime = DiggingBlock.hardness * 1.5
-        if(DiggingBlock.harvest && DiggingBlock.harvestTools[this.inventory.getSlot(this.heldSlot).itemType.id]) BaseTime *= 3.33;
-        // Decrease dig time if the tool is enchanted.
-        // Decrease dig time if the tool is a special tool.
-        // Decrease dig time if we have haste.
-        // Increase dig time if we have mining fatigue.
-        // Increase dig time if we're underwater.
-        this.diggingTimeLeft = BaseTime
+        this.diggingTimeLeft = DiggingBlock.digTime(this.inventory.getSlot(this.heldSlot), this.gamemode == 1, false, false) / 1000
     }
     this.finishDigging = function(Position){
         Assert(Validate.isVec3(Position), "Invalid position for block dig")
-        if(this.diggingBlock && this.diggingBlock.equals(Position) && this.diggingTimeLeft < 1){
-            // Trigger block update for all the clients
-            // Spawn drop
-        }else{
-            this.disconnect("You broke blocks too fast!")
+        
+    }
+    this.changeGamemode = function(NewGamemode){
+        switch(NewGamemode){
+            case "survival":
+            case 0:
+                this.gamemode = 0
+            break;
+            case "creative":
+            case 1:
+                this.gamemode = 1
+            break;
+            case "adventure":
+            case 2:
+                this.gamemode = 2
+            break;
+            case "spectator":
+            case 3:
+                this.gamemode = 3
+            break;
+            default:
+                throw new Error("Invalid gamemode type / number")
         }
+        this.resetDigging()
+        this.sendGamemode()
     }
     var ParentTick = this.tick
     this.tick = function(){
-        if(this.diggingTimeLeft != null && this.diggingTimeLeft > 1){
+        var Events = ParentTick.apply(this, [])
+        
+        // Decrease digging time left
+        if(this.diggingTimeLeft != null && this.diggingTimeLeft > 0){
             this.diggingTimeLeft -= 0.05
             if(this.diggingTimeLeft < 0) this.diggingTimeLeft = 0;
         }
-        return ParentTick.bind(this)();
+        if(this.diggingTimeLeft != null && this.diggingTimeLeft < 0.05){
+            if(this.gamemode == 0){
+                var BrokenStack = new ItemStack({id:this.rawWorld.getBlock(this.diggingBlock).type}, 1)
+                Events.push(new EntitySpawnEvent(new DroppedItemEntity(this.world.generateUEID(), BrokenStack, this.world)))
+            }
+            this.rawWorld.setBlock(this.diggingBlock, {
+                type: nameToBlock["air"].id,
+                metadata: 0
+            })
+            
+            this.resetDigging()
+        }
+        return Events;
     }
     
     this.sendInventory = function(){
@@ -185,10 +224,16 @@ module.exports = function Player(UEID, Client, World){
         this.Client.write('login', {
             entityId: this.Client.id,
             levelType: 'default',
-            gameMode: 0,
+            gameMode: this.gamemode,
             dimension: 0,
             difficulty: 2,
             maxPlayers: 10,
+        })
+    }
+    this.sendGamemode = function(){
+        this.Client.write('game_state_change', {
+            reason: 3,
+            gameMode: this.gamemode
         })
     }
     this.updateClientPosition = function(){

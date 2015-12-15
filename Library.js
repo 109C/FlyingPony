@@ -9,10 +9,12 @@ var UUID = require("./lib/uuid-1345")
 var PrismarineWorldSync = require("./lib/prismarine-world-sync")
 
 var BlockIdToBlock = {}
+var BlockNameToBlock = {}
 
 for(var BlockKey in MinecraftData.blocks){
     var CurrentBlock = MinecraftData.blocks[BlockKey]
     BlockIdToBlock[CurrentBlock.id] = CurrentBlock
+    BlockNameToBlock[CurrentBlock.name] = CurrentBlock
 }
 
 module.exports = {
@@ -24,6 +26,7 @@ module.exports = {
     UUID: UUID,
     PrismarineWorldSync: PrismarineWorldSync,
     internal: {
-        blocks: BlockIdToBlock
+        blockIdToBlock: BlockIdToBlock,
+        blockNameToBlock: BlockNameToBlock
     }
 }
