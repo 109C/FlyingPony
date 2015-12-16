@@ -20,7 +20,7 @@ module.exports = function ItemStack(ItemType, StackSize){
             return {
                 blockId: this.itemType.id,
                 itemCount: this.stackSize,
-                itemDamage: undefined
+                itemDamage: 0
             }
         }
     }
