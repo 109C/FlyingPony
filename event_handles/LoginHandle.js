@@ -6,7 +6,6 @@ module.exports = function(Server, Event){
     Server.Logger.log("Player '" +Player.username+ "' attempted to join.")
     
     
-    Player.ueid = Server.generateUEID()
     Player.world.players[Player.username] = Player
     Player.world.entities[Player.ueid] = Player
     Server.players[Player.username] = Player

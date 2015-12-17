@@ -17,6 +17,6 @@ module.exports = function Inventory(Slots){
     }
     
     for(var i = 0; i < Slots; i++){
-        this._inventory[i] = new ItemStack(new Item(256), 1)
+        this._inventory[i] = new ItemStack("iron_shovel", 1)
     }
 }
