@@ -50,13 +50,12 @@ module.exports = function(Server, Event){
     // Spawn the appropriate entities client side.
     
     if(Player.loadingChunks == false){
-        Player.calculateNearbyEntities()
-        
         for(var EntityKey in Player.nearbyEntities){
         	var Entity = Player.nearbyEntities[EntityKey]
             if(Player.spawnedEntities[Entity.ueid] == undefined && Entity.position.y > 0){
                 Player.sendEntitySpawn(Entity)
                 Player.spawnedEntities[Entity.ueid] = true
+                break; // Only spawn one entity per tick.
             }
         }
     }

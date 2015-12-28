@@ -35,6 +35,8 @@ module.exports = function Entity(UEID, World){
         var TickEvents = []
         var Event;
         
+        this.calculateNearbyEntities()
+        
         if(Event = this.doAI()) TickEvents.push(Event);
         if(this.isGravitational()) this.doGravity();
         if(this.isGravitational() && (Event = this.doPhysics())) TickEvents.push(Event);
@@ -67,6 +69,7 @@ module.exports = function Entity(UEID, World){
     }
     this.teleportTo = function(Vector){
         this.position = Vector
+        this.calculateNearbyEntities()
     }
     this.changeWorld = function(NewWorld){}
     

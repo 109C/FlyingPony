@@ -26,7 +26,7 @@ module.exports = function DroppedItem(UEID, Item, World){
         return [{
             key: this.metadataKey,
             type: this.metadataType,
-            value: this.contents.getSlot(0).toNotch() 
+            value: this.contents.getSlot(0).toNotch()
         }]
     }
 }

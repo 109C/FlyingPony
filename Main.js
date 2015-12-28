@@ -42,7 +42,13 @@ Server.MinecraftProtocolServer = MinecraftProtocol.createServer({"online-mode": 
 Server.eventLoop = EventLoop
 
 Server.UUID = UUID
-Server.UEID = 0
+
+/*
+|| For some reason, when the UEIDs do not start at tara strong's age the
+|| spawn packet causes the client to freeze.
+*/
+Server.UEID = 42
+
 Server.eventLoopInterval = 0
 Server.bootHandles = {}
 Server.players = {}

@@ -1,8 +1,5 @@
 //
 
-var Library = require("../Library.js")
-var nameToBlock = Library.internal.blockNameToBlock
-
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
 var Convert = require("../util/Convert.js")
@@ -59,6 +56,9 @@ module.exports = function Player(UEID, Client, World){
     this.startDigging = function(Position, Face){
         Assert(Validate.isVec3(Position), "Invalid position for block dig")
         
+        // In case we where digging a block before
+        this.resetDigging()
+        
         this.diggingBlock = Position
         this.diggingBlockFace = Face
         var DiggingBlock = this.rawWorld.getBlock(Position)
@@ -108,16 +108,16 @@ module.exports = function Player(UEID, Client, World){
             this.diggingTimeLeft -= 0.05
             if(this.diggingTimeLeft < 0) this.diggingTimeLeft = 0;
         }
+        // Break the block if the digging time is up.
         if(this.diggingTimeLeft != null && this.diggingTimeLeft < 0.05){
             if(this.gamemode == 0){
                 var BrokenStack = new ItemStack({id:this.rawWorld.getBlock(this.diggingBlock).type}, 1)
-                Events.push(new EntitySpawnEvent(new DroppedItemEntity(this.world.generateUEID(), BrokenStack, this.world)))
+                var DroppedStack = new DroppedItemEntity(this.world.generateUEID(), BrokenStack, this.world)
+                
+                DroppedStack.teleportTo(this.diggingBlock)
+                Events.push(new EntitySpawnEvent(DroppedStack))
             }
-            this.rawWorld.setBlock(this.diggingBlock, {
-                type: nameToBlock["air"].id,
-                metadata: 0
-            })
-            
+            this.world.setBlock(this.diggingBlock, "air", 0)
             this.resetDigging()
         }
         return Events;
@@ -206,6 +206,12 @@ module.exports = function Player(UEID, Client, World){
         }
     }
     this.sendEntityPosition = function(Entity){
+        // Don't send the client info about an entity that doesn't exist.
+        if(this.spawnedEntities[Entity.ueid] == undefined) return;
+        
+        // Objects positions are not sent to the client, it guesses where they are.
+        if(Entity.isObject() == true) return;
+        
         this.Client.write('entity_teleport', {
             entityId: Entity.ueid,
             x: Entity.position.x * 32,
@@ -253,6 +259,12 @@ module.exports = function Player(UEID, Client, World){
             "groundUp": true,
             "bitMap": (IsLoad ? 0xffff : 0x0000),
             "chunkData": ChunkDump
+        })
+    }
+    this.sendBlockUpdate = function(Position, BlockID, BlockMeta){
+        this.Client.write("block_change", {
+            location: Position,
+            type: BlockID << 4 | BlockMeta
         })
     }
     this.tellRaw = function(Message){
