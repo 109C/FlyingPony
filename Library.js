@@ -1,5 +1,7 @@
 //
 
+var fs = require("fs")
+
 var MinecraftProtocol = require("./lib/minecraft-protocol")
 var MinecraftData = require("./lib/minecraft-data")("1.8")
 var PrismarineWorld = require("./lib/prismarine-world")
@@ -11,10 +13,20 @@ var PrismarineWorldSync = require("./lib/prismarine-world-sync")
 var BlockIdToBlock = {}
 var BlockNameToBlock = {}
 
+// Create block lookup table.
 for(var BlockKey in MinecraftData.blocks){
     var CurrentBlock = MinecraftData.blocks[BlockKey]
     BlockIdToBlock[CurrentBlock.id] = CurrentBlock
     BlockNameToBlock[CurrentBlock.name] = CurrentBlock
+}
+
+// Load configuration.
+var Config;
+try{
+    Config = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
+}catch(e){
+    console.log("Invalid configuration file. (FlyingPony.conf)")
+    throw e;
 }
 
 module.exports = {
@@ -27,6 +39,7 @@ module.exports = {
     PrismarineWorldSync: PrismarineWorldSync,
     internal: {
         blockIdToBlock: BlockIdToBlock,
-        blockNameToBlock: BlockNameToBlock
+        blockNameToBlock: BlockNameToBlock,
+        Config: Config
     }
 }

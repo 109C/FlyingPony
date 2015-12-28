@@ -3,7 +3,6 @@ var EntitySpawnEvent = require("../events/EntitySpawnEvent.js")
 
 module.exports = function(Server, Event){
     var Player = Event.getPlayer()
-    Server.Logger.log("Player '" +Player.username+ "' attempted to join.")
     
     
     Player.world.players[Player.username] = Player
@@ -31,5 +30,5 @@ module.exports = function(Server, Event){
     Server.Scheduler.addEvent(1, JoinMessage)
     Server.Scheduler.addEvent(1, PlayerSpawn)
     
-    Server.Logger.log("Player '" +Player.username+ "' joined.")
+    Server.Logger.log("Player '" +Player.username+ "' (" + Player.Client.socket.remoteAddress + ") joined.")
 }

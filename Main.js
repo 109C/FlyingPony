@@ -1,23 +1,11 @@
 //
 
-var fs = require("fs")
-
-// Load configuration.
-var Config;
-try{
-    Config = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
-}catch(e){
-    console.log("Invalid configuration file. (FlyingPony.conf)")
-    throw e;
-}
-
 var Library = require("./Library.js")
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
 var PrismarineWorld = Library.PrismarineWorld
 var PrismarineWorldSync = Library.PrismarineWorldSync
 var Vec3 = Library.Vec3
-var UUID = Library.UUID
 
 var Logger = require("./logger/Logger")
 var ClientAssert = require("./util/ClientAssert.js")
@@ -48,10 +36,11 @@ Server.worlds = [Server.lobbyWorld, Server.gameWorld]
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
 Server.PluginManager = new PluginManager()
-Server.MinecraftProtocolServer = MinecraftProtocol.createServer(Config)
+Server.MinecraftProtocolServer = MinecraftProtocol.createServer(Library.internal.Config)
+Server.Config = Library.internal.Config
 Server.eventLoop = EventLoop
 
-Server.UUID = UUID
+Server.UUID = Library.UUID
 
 /*
 || For some reason, when the UEIDs do not start at tara strong's age the
@@ -71,6 +60,13 @@ Server.generateUEID = function(){
 Server.bootHandles.PlayerLogin = function(Client){
     var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.lobbyWorld)
     var Assert = ClientAssert(CurrentPlayer, Server)
+    
+    // Make sure the player isn't already logged in.
+    if(Server.players[Client.username] != undefined){
+        Client.end("You are already logged in!")
+        Server.Logger.log("Player '" +Client.username+ "' (" +Client.socket.remoteAddress+ ") attempted to login twice!")
+        return;
+    }
     
     Client.on('end', function(){
         Server.Scheduler.addEvent(1, new LogoutEvent(CurrentPlayer))
@@ -116,9 +112,6 @@ Server.bootHandles.ClientConnection = function(Client){
         Server.Logger.log("Something went wrong, shutting down server.")
         throw ErrorMessage;
     })
-    if(Server.players[Client.username] != undefined){
-        Client.end("You are already logged in")
-    }
 }
 
 Server.initialize = function(){
