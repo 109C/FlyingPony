@@ -49,6 +49,7 @@ Server.UUID = Library.UUID
 Server.UEID = 42
 
 Server.eventLoopInterval = 0
+Server.tps = 0
 Server.bootHandles = {}
 Server.players = {}
 
@@ -118,9 +119,19 @@ Server.initialize = function(){
     Server.MinecraftProtocolServer.on("login", Server.bootHandles.PlayerLogin)
     Server.MinecraftProtocolServer.on("connection", Server.bootHandles.ClientConnection)
     
+    var TicksPerSec = 0;
+    
+    // Event loop.
     Server.eventLoopInterval = setInterval(function(){
+        TicksPerSec++
         Server.eventLoop(Server)
     }, 50)
+    
+    // TPS monitor.
+    setInterval(function(){
+        Server.tps = TicksPerSec
+        TicksPerSec = 0
+    }, 1000)
     
     Server.PluginManager.loadPlugins(Server, __dirname + "/plugins/")
 }
