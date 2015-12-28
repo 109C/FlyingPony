@@ -6,7 +6,7 @@ module.exports = function ClientAssert(Player, Server){
     function Assert(Condition, ErrorText){
         if(!Condition){
             Player.Client.end(ErrorText)
-            Server.Scheduler.addEvent(new LogoutEvent(Player))
+            Server.Scheduler.addEvent(1, new LogoutEvent(Player))
             console.log("Client failed assertion: " + "\n" + ErrorText)
         }
     }

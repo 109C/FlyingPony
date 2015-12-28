@@ -47,15 +47,19 @@ module.exports = function(Server, Event){
     
     Player.loadingChunks = SentChunkThisTick
     
-    // Spawn the appropriate entities client side.
-    
     if(Player.loadingChunks == false){
         for(var EntityKey in Player.nearbyEntities){
         	var Entity = Player.nearbyEntities[EntityKey]
-            if(Player.spawnedEntities[Entity.ueid] == undefined && Entity.position.y > 0){
+        	
+        	// Spawn the appropriate entities client side.
+            if(Player.hasSpawnedEntity(Entity) == false && Entity.hasValidStance()){
                 Player.sendEntitySpawn(Entity)
-                Player.spawnedEntities[Entity.ueid] = true
                 break; // Only spawn one entity per tick.
+            }
+            
+            // Spawn the appropriate entities client side.
+            if(Player.distanceTo(Entity) > 64){
+                Player.sendEntityDespawn(Entity)
             }
         }
     }

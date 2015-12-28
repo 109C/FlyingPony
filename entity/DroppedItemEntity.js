@@ -22,6 +22,12 @@ module.exports = function DroppedItem(UEID, Item, World){
     this.hasMetadataPacket = function(){
         return true
     }
+    this.getPhysicalWidth = function(){
+        return 0.25
+    }
+    this.getPhysicalHeight = function(){
+        return 0.25
+    }
     this.getMetadataPacket = function(){
         return [{
             key: this.metadataKey,

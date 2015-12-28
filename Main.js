@@ -1,7 +1,17 @@
 //
 
-var Library = require("./Library.js")
+var fs = require("fs")
 
+// Load configuration.
+var Config;
+try{
+    Config = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
+}catch(e){
+    console.log("Invalid configuration file. (FlyingPony.conf)")
+    throw e;
+}
+
+var Library = require("./Library.js")
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
 var PrismarineWorld = Library.PrismarineWorld
@@ -38,7 +48,7 @@ Server.worlds = [Server.lobbyWorld, Server.gameWorld]
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
 Server.PluginManager = new PluginManager()
-Server.MinecraftProtocolServer = MinecraftProtocol.createServer({"online-mode": false})
+Server.MinecraftProtocolServer = MinecraftProtocol.createServer(Config)
 Server.eventLoop = EventLoop
 
 Server.UUID = UUID

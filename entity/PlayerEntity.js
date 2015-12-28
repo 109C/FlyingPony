@@ -48,6 +48,7 @@ module.exports = function Player(UEID, Client, World){
     this.isDigging = function(){
         return this.diggingBlock == undefined ? false : true
     }
+    
     this.resetDigging = function(){
         this.diggingBlock = null
         this.diggingBlockFace = null
@@ -75,6 +76,7 @@ module.exports = function Player(UEID, Client, World){
         Assert(Validate.isVec3(Position), "Invalid position for block dig")
         
     }
+    
     this.changeGamemode = function(NewGamemode){
         switch(NewGamemode){
             case "survival":
@@ -123,6 +125,14 @@ module.exports = function Player(UEID, Client, World){
         return Events;
     }
     
+    this.hasSpawnedEntity = function(Entity){
+        if(this.spawnedEntities[Entity.ueid] == undefined){
+            return false
+        }else{
+            return true
+        }
+    }
+    
     this.sendInventory = function(){
         for(var slot = 0; slot < 4 * 9; slot++){
             this.Client.write('set_slot', {
@@ -152,6 +162,7 @@ module.exports = function Player(UEID, Client, World){
         }
     }
     this.sendEntitySpawn = function(Entity){
+        this.spawnedEntities[Entity.ueid] = true
         if(Entity.isPlayer()){
             this.Client.write('named_entity_spawn', {
                 entityId: Entity.ueid,
@@ -204,6 +215,13 @@ module.exports = function Player(UEID, Client, World){
                 metadata: Entity.getMetadataPacket()
             })
         }
+    }
+    this.sendEntityDespawn = function(Entity){
+        this.Client.write('entity_destroy', {
+            entityIds:[
+                Entity.ueid
+            ]
+        })
     }
     this.sendEntityPosition = function(Entity){
         // Don't send the client info about an entity that doesn't exist.

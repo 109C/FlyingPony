@@ -52,20 +52,24 @@ module.exports = function Entity(UEID, World){
     this.isObject = function(){
         return false
     }
+    this.isGravitational = function(){
+        return false
+    }
     this.hasMetadataPacket = function(){
         return false
     }
-    this.isGravitational = function(){
-        return false
+    this.hasValidStance = function(){
+        if(this.position.y < 255 && this.position.y > 0){
+            return true
+        }else{
+            return false
+        }
     }
     this.getPhysicalWidth = function(){
         return 1
     }
     this.getPhysicalHeight = function(){
         return 1
-    }
-    this.moveRelative = function(RelativeVector){
-        this.position.add(RelativeVector)
     }
     this.teleportTo = function(Vector){
         this.position = Vector
@@ -117,7 +121,7 @@ module.exports = function Entity(UEID, World){
     }
     this.doAI = function(){}
     
-    this.getDistanceFrom = function(Entity){
+    this.distanceTo = function(Entity){
         return this.position.distanceTo(Entity.position)
     }
     this.calculateNearbyEntities = function(MaxDistance){
@@ -128,7 +132,7 @@ module.exports = function Entity(UEID, World){
         for(EntityKey in this.world.entities){
             var CurrentEntity = this.world.entities[EntityKey]
             
-            if(this.getDistanceFrom(CurrentEntity) <= this.nearbyRange && this != CurrentEntity){
+            if(this.distanceTo(CurrentEntity) <= this.nearbyRange && this != CurrentEntity){
                 this.nearbyEntities[CurrentEntity.ueid] = CurrentEntity
                 if(CurrentEntity.isPlayer()){
                     this.nearbyPlayers[CurrentEntity.username] = CurrentEntity
