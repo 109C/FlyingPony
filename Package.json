@@ -2,12 +2,13 @@
     "name": "FlyingPony",
     "author": "109C",
     "dependencies":{
+        "minecraft-data": "git://github.com/PrismarineJS/node-minecraft-data#master",
         "minecraft-protocol": "git://github.com/PrismarineJS/node-minecraft-protocol#master",
-        "prismarine-world": "*",
-        "vec3": "git://github.com/andrewrk/node-vec3#master",
         "prismarine-chunk": "*",
+        "prismarine-world": "*",
         "uuid-1345": "*",
-        "minecraft-data": "git://github.com/PrismarineJS/node-minecraft-data#master"
+        "vec3": "git://github.com/andrewrk/node-vec3#master",
+        "parallel-processes": "git://github.com/109c/parallel-processes#master"
     },
     "keywords": [
         "thisandagain",

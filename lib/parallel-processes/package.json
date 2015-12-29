@@ -1,0 +1,18 @@
+{
+  "name": "parallel-processes",
+  "version": "1.0.0",
+  "description": "Run child processes with ease, asynchronously.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "node examples/TestRunner.js"
+  },
+  "keywords": [
+    "process",
+    "async",
+    "parallel"
+  ],
+  "author": "109C"
+}
