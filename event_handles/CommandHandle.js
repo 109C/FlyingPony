@@ -1,3 +1,5 @@
+var util = require("util")
+
 var ChatEvent = require("../events/ChatEvent")
 var LoginEvent = require("../events/LoginEvent")
 
@@ -13,6 +15,8 @@ module.exports = function(Server, Event){
             }else if(Args[0] == "disable"){
                 Server.PluginManager.disablePlugin(Args[1])
                 Server.Scheduler.addEvent(1, new ChatEvent(undefined, Event.getSender(), {"text": "Disabling plugin '" + Args[1] + "'", color:"green"}))
+            }else if(Args[0] == "entities"){
+                Server.Scheduler.addEvent(1, new ChatEvent(undefined, Event.getSender(), {"text": "SpawnedEntities '" + Object.keys(Sender.spawnedEntities) + "'", color:"green"}))
             }
         }else{
             Server.Scheduler.addEvent(1, new ChatEvent(undefined, Sender, {"text": "No such command.", "color": "red"}))

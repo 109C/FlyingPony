@@ -1,5 +1,7 @@
 //
 
+
+var Library = require("../Library.js")
 var Inheritance = require("../util/Inheritance.js")
 var Assert = require("../util/Assert.js")
 var Convert = require("../util/Convert.js")
@@ -217,6 +219,7 @@ module.exports = function Player(UEID, Client, World){
         }
     }
     this.sendEntityDespawn = function(Entity){
+        delete this.spawnedEntities[Entity.ueid]
         this.Client.write('entity_destroy', {
             entityIds:[
                 Entity.ueid
@@ -251,7 +254,7 @@ module.exports = function Player(UEID, Client, World){
             gameMode: this.gamemode,
             dimension: 0,
             difficulty: 2,
-            maxPlayers: 10,
+            maxPlayers: Library.internal.Config["max-players"],
         })
     }
     this.sendGamemode = function(){

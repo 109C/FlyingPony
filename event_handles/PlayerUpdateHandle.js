@@ -1,5 +1,8 @@
+var Library = require("../Library.js")
+
 module.exports = function(Server, Event){
     var Player = Event.getPlayer()
+    var VDistance = Library.internal.Config["view-distance-chunks"]
     
     var SentChunkThisTick = false
             
@@ -8,11 +11,8 @@ module.exports = function(Server, Event){
     
     // Only send one chunk per tick, as the client refuses any other chunks after the first few.
     
-    for(var OffsetX = -4; OffsetX < 5; OffsetX++){
-        if(SentChunkThisTick == true) break
-        
-        for(var OffsetZ = -4; OffsetZ < 5; OffsetZ++){
-            if(SentChunkThisTick == true) break
+    for(var OffsetX = -VDistance; OffsetX <= VDistance; OffsetX++){
+        for(var OffsetZ = -VDistance; OffsetZ <= VDistance; OffsetZ++){
             
             CurrentChunkX = PlayerChunkX + OffsetX
             CurrentChunkZ = PlayerChunkZ + OffsetZ
@@ -33,12 +33,11 @@ module.exports = function(Server, Event){
             var ChunkZ = ChunkKey.split("|")[1]
             
             // Don't unload the chunks immediately, so that we don't waste bandwidth
-            // sending chunks back to a player that keep crossing chunk border.
+            // sending chunks back to a player that keeps crossing chunk borders.
             
-            if(Math.abs(PlayerChunkX - ChunkX) > 6 || Math.abs(PlayerChunkZ - ChunkZ) > 6){
+            if(Math.abs(PlayerChunkX - ChunkX) > (VDistance + 2) || Math.abs(PlayerChunkZ - ChunkZ) > (VDistance + 2)){
                 Player.sendChunkData(ChunkX, ChunkZ, new Buffer(0), false)
                 delete Player.sentChunks[ChunkKey]
-                break;
             }
         }
     }

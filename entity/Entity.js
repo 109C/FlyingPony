@@ -29,7 +29,7 @@ module.exports = function Entity(UEID, World){
     
     this.nearbyEntities = []
     this.nearbyPlayers = []
-    this.nearbyRange = 64
+    this.nearbyRange = Library.internal.Config["view-distance-entities"]
     
     this.tick = function(){
         var TickEvents = []
@@ -39,7 +39,7 @@ module.exports = function Entity(UEID, World){
         
         if(Event = this.doAI()) TickEvents.push(Event);
         if(this.isGravitational()) this.doGravity();
-        if(this.isGravitational() && (Event = this.doPhysics())) TickEvents.push(Event);
+        if((Event = this.doPhysics()) && Event != undefined) TickEvents.push(Event);
         
         return TickEvents
     }
@@ -117,7 +117,9 @@ module.exports = function Entity(UEID, World){
             var Scalar = this.terminalVelocity / VelocityLength
             this.velocity.scaled(Scalar)
         }
-        return new MoveEvent(this, this.position.add(this.velocity), false)
+        if(this.velocity.distanceTo(ZeroVector) > 0){
+            return new MoveEvent(this, this.position.add(this.velocity), false)
+        }
     }
     this.doAI = function(){}
     

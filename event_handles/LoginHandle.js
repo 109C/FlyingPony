@@ -1,3 +1,4 @@
+var Library = require("../Library.js")
 var ChatEvent = require("../events/ChatEvent.js")
 var EntitySpawnEvent = require("../events/EntitySpawnEvent.js")
 
@@ -9,6 +10,7 @@ module.exports = function(Server, Event){
     Player.world.entities[Player.ueid] = Player
     Server.players[Player.username] = Player
     
+    Player.changeGamemode(Library.internal.Config["gamemode"])
     Player.sendLoginInfo()
             
     Player.updateClientPosition()

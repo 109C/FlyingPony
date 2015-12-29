@@ -119,19 +119,29 @@ Server.initialize = function(){
     Server.MinecraftProtocolServer.on("login", Server.bootHandles.PlayerLogin)
     Server.MinecraftProtocolServer.on("connection", Server.bootHandles.ClientConnection)
     
-    var TicksPerSec = 0;
+    var LastTime = Date.now()
+    var CurrentTicks = 0;
     
     // Event loop.
     Server.eventLoopInterval = setInterval(function(){
-        TicksPerSec++
+        var TickStart = Date.now()
+        
         Server.eventLoop(Server)
+        
+        var TickTotal = Date.now() - TickStart
+        
+        if(TickTotal > 500){
+            Server.Logger.log("A Tick took " + TickTotal + " milliseconds to execute. (" + (TickTotal / 50) + " times the usual)")
+        }
+        
+        CurrentTicks++
+        if(Date.now() - LastTime > 1000){
+            Server.tps = CurrentTicks
+            LastTime = Date.now()
+            CurrentTicks = 0
+        }
+        
     }, 50)
-    
-    // TPS monitor.
-    setInterval(function(){
-        Server.tps = TicksPerSec
-        TicksPerSec = 0
-    }, 1000)
     
     Server.PluginManager.loadPlugins(Server, __dirname + "/plugins/")
 }
