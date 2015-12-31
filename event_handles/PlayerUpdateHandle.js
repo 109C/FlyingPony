@@ -2,6 +2,7 @@ var Library = require("../Library.js")
 
 module.exports = function(Server, Event){
     var Player = Event.getPlayer()
+    var World = Player.world
     var VDistance = Library.internal.Config["view-distance-chunks"]
     
     var SentChunkThisTick = false
@@ -9,7 +10,7 @@ module.exports = function(Server, Event){
     var PlayerChunkX = Math.floor(Player.position.x / 16 )
     var PlayerChunkZ = Math.floor(Player.position.z / 16 )
     
-    // Only send one chunk per tick, as the client refuses any other chunks after the first few.
+    // Send the needed chunks, and generate the ones that are not there.
     
     for(var OffsetX = -VDistance; OffsetX <= VDistance; OffsetX++){
         for(var OffsetZ = -VDistance; OffsetZ <= VDistance; OffsetZ++){
@@ -18,10 +19,13 @@ module.exports = function(Server, Event){
             CurrentChunkZ = PlayerChunkZ + OffsetZ
             if(Player.sentChunks[ "" + CurrentChunkX + "|" + CurrentChunkZ] == true) continue
             
-            var ChunkToSend =  Player.rawWorld.getColumn(CurrentChunkX, CurrentChunkZ)
-            Player.sendChunkData(CurrentChunkX, CurrentChunkZ, ChunkToSend.dump(), true)
-            Player.sentChunks["" + CurrentChunkX + "|" + CurrentChunkZ] = true
-            SentChunkThisTick = true
+            if(World.isChunkLoaded(CurrentChunkX, CurrentChunkZ)){
+                Player.sendChunkData(CurrentChunkX, CurrentChunkZ, World.getChunk(CurrentChunkX, CurrentChunkZ).dump(), true)
+                Player.sentChunks[CurrentChunkX + "|" + CurrentChunkZ] = true
+                SentChunkThisTick = true
+            }else{
+                World.requestChunkLoad(CurrentChunkX, CurrentChunkZ)
+            }
         }
     }
     

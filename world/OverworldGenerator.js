@@ -1,7 +1,7 @@
 //
 
 var Library = require("../Library.js")
-var PrismarineChunk = Library.PrismarineChunk("1.8.8")
+var PrismarineChunk = Library.PrismarineChunk
 var Vec3 = Library.Vec3
 
 module.exports = function generator(ChunkX, ChunkZ){

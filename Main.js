@@ -3,8 +3,6 @@
 var Library = require("./Library.js")
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
-var PrismarineWorld = Library.PrismarineWorld
-var PrismarineWorldSync = Library.PrismarineWorldSync
 var Vec3 = Library.Vec3
 
 var Logger = require("./logger/Logger")
@@ -14,8 +12,7 @@ var EventLoop = require("./event_loop/EventLoop.js")
 var Scheduler = require("./event_loop/Scheduler.js")
 var PluginManager = require("./plugin_manager/PluginManager")
 
-var LobbyGenerator = require("./world/LobbyGenerator.js")
-var GameMapGenerator = require("./world/GameGenerator.js")
+var OverworldGenerator = require("./world/OverworldGenerator.js")
 
 var PlayerEntity = require("./entity/PlayerEntity.js")
 var World = require("./world/World.js")
@@ -30,9 +27,10 @@ var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
-Server.lobbyWorld = new World(Server, new PrismarineWorldSync(new PrismarineWorld(LobbyGenerator)))
-Server.gameWorld = new World(Server, new PrismarineWorldSync(new PrismarineWorld(GameMapGenerator)))
-Server.worlds = [Server.lobbyWorld, Server.gameWorld]
+Server.Overworld = new World(Server, __dirname + "/world/OverworldGenerator.js")
+
+Server.worlds = [Server.Overworld]
+
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
 Server.PluginManager = new PluginManager()
@@ -59,7 +57,7 @@ Server.generateUEID = function(){
 }
 
 Server.bootHandles.PlayerLogin = function(Client){
-    var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.lobbyWorld)
+    var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.Overworld)
     var Assert = ClientAssert(CurrentPlayer, Server)
     
     // Make sure the player isn't already logged in.
@@ -130,7 +128,7 @@ Server.initialize = function(){
         
         var TickTotal = Date.now() - TickStart
         
-        if(TickTotal > 500){
+        if(TickTotal > 100){
             Server.Logger.log("A Tick took " + TickTotal + " milliseconds to execute. (" + (TickTotal / 50) + " times the usual)")
         }
         
@@ -140,12 +138,10 @@ Server.initialize = function(){
             LastTime = Date.now()
             CurrentTicks = 0
         }
-        
     }, 50)
     
     Server.PluginManager.loadPlugins(Server, __dirname + "/plugins/")
 }
-
 
 
 Server.initialize()

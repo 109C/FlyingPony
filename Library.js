@@ -1,14 +1,21 @@
 //
 
+var DefaultConfig = {
+    version: "1.8"
+}
+
 var fs = require("fs")
+var Inheritance = require("./util/Inheritance.js")
+var Assert = require("./util/Assert.js")
 
 var MinecraftProtocol = require("./lib/minecraft-protocol")
-var MinecraftData = require("./lib/minecraft-data")("1.8")
+var MinecraftData = require("./lib/minecraft-data")(DefaultConfig.version)
 var PrismarineWorld = require("./lib/prismarine-world")
 var PrismarineChunk = require("./lib/prismarine-chunk")
+var PrismarineWorldSync = require("./lib/prismarine-world-sync")
 var Vec3 = require("./lib/vec3")
 var UUID = require("./lib/uuid-1345")
-var PrismarineWorldSync = require("./lib/prismarine-world-sync")
+var ParallelProcesses = require("./lib/parallel-processes/")
 
 var BlockIdToBlock = {}
 var BlockNameToBlock = {}
@@ -20,8 +27,11 @@ for(var BlockKey in MinecraftData.blocks){
     BlockNameToBlock[CurrentBlock.name] = CurrentBlock
 }
 
+Assert(Object.keys(BlockNameToBlock).length > 0, "Block name to block id lookup table is empty")
+
 // Load configuration.
-var Config;
+var Config = {}
+Inheritance(DefaultConfig, Config)
 try{
     Config = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
 }catch(e){
@@ -29,14 +39,17 @@ try{
     throw e;
 }
 
+Config.version = "1.8"
+
 module.exports = {
     MinecraftProtocol: MinecraftProtocol,
     MinecraftData: MinecraftData,
     PrismarineWorld: PrismarineWorld,
-    PrismarineChunk: PrismarineChunk,
+    PrismarineChunk: PrismarineChunk(Config.version),
+    PrismarineWorldSync: PrismarineWorldSync,
     Vec3: Vec3,
     UUID: UUID,
-    PrismarineWorldSync: PrismarineWorldSync,
+    ParallelProcesses: ParallelProcesses,
     internal: {
         blockIdToBlock: BlockIdToBlock,
         blockNameToBlock: BlockNameToBlock,
