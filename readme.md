@@ -8,12 +8,19 @@
  Yes you can! Using the babel-coffeJSr-ify runtime decompiler, it's possible to run this using only as ES 0.2 (Beta) jQuery engine.
  In fact, it even works on Netscape 1.33.7, using PWACFJSv9001. (PollyWantACrackerFiller.JS)
 
-# No really, what is this?
- A spoof of flying-squid.
+## No really, what is this?
+ A spoof of flying-squid. More of an anti-flying squid, as it often has major design
+ differences. (e.g. spaghetti event emitter callback/promise hell vs needlessly complex, confusing and sluggish event loop.)
  
-# This actually works?
- Surprisingly, you can log in and do some stuff, despite all the bugs...
+## This actually works?
+ Surprisingly, you can log in and do some stuff, despite all the bugs.
  
+## How to install
+ ```
+ make install
+ ```
+ If it gets interrupted while installing, `make uninstall` and then `make install` again.
+
 ## Planned features
 - [ ] World
   - [X] Prismarine-world worlds
@@ -21,7 +28,7 @@
   - [ ] Dynamicly creating / destroying worlds
 - [ ] Blocks
   - [X] Regular blocks
-  - [ ] Entity blocks / Blocks with invenventories
+  - [ ] Entity blocks / Blocks with inventories
 - [ ] Player
   - [X] Movement
   - [ ] Inventory

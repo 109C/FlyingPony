@@ -20,7 +20,7 @@ module.exports = function World(Server, WorldGeneratorPath){
     var Self = this;
     
     function DummyGenerator(){
-        Self.log("Warning: dummy generator generated chunk, this should not happen")
+        Self.log("Warning: dummy generator generated chunk in main process, this should NOT happen!")
         return new PrismarineChunk()
     }
     
