@@ -20,6 +20,10 @@
  make install
  ```
  If it gets interrupted while installing, `make uninstall` and then `make install` again.
+## How to run
+ ```
+ node Main.js
+ ```
 
 ## Planned features
 - [ ] World
