@@ -25,7 +25,6 @@ module.exports = function Entity(UEID, World){
     this.yaw = 0
     this.pitch = 0
     this.world = World
-    this.rawWorld = World.PrismarineWorld
     
     this.nearbyEntities = []
     this.nearbyPlayers = []
@@ -34,6 +33,9 @@ module.exports = function Entity(UEID, World){
     this.tick = function(){
         var TickEvents = []
         var Event;
+        
+        // In case the place we are isn't loaded.
+        if(this.world.isBlockLoaded(this.position) == false) return [];
         
         this.calculateNearbyEntities()
         
@@ -81,7 +83,7 @@ module.exports = function Entity(UEID, World){
         var BlocksBelow = []
         for(var i = -Math.ceil(this.getPhysicalWidth()); i < Math.ceil(this.getPhysicalWidth()); i++){
             for(var j = -Math.ceil(this.getPhysicalWidth()); j < Math.ceil(this.getPhysicalWidth()); j++){
-                var BlockBelow = this.rawWorld.getBlock(new Vec3(i, Math.floor(this.position.y), j))
+                var BlockBelow = this.world.getBlock(new Vec3(i, Math.floor(this.position.y), j))
                 BlockBelow.position = new Vec3(i, Math.floor(this.position.y), j)
                 BlocksBelow.push(BlockBelow)
             }

@@ -104,6 +104,8 @@ Server.bootHandles.PlayerLogin = function(Client){
         
         var Position = new Vec3(Packet.location.x, Packet.location.y, Packet.location.z)
         
+        Assert(CurrentPlayer.world.isBlockLoaded(Position) == true, "block_dig: Invalid location, not loaded")
+        
         // Dig start, Dig abort, Dig finish.
         if(Packet.status == 0 || Packet.status == 1 || Packet.status == 2){
             Server.Scheduler.addEvent(1, new PlayerDigEvent(CurrentPlayer, Position, Packet.face, Packet.status))

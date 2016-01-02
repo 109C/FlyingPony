@@ -1,8 +1,9 @@
 var Validate = require("./Validate.js")
+var Assert = require("./Assert.js")
 
 module.exports = {
     "Convert360To256": Convert360To256,
-    posToChunck: PosToChunk,
+    posToChunk: PosToChunk,
 }
 
 function Convert360To256(Yaw360){

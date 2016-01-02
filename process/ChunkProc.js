@@ -2,10 +2,6 @@
 
 var util = require("util")
 var Assert = require("../util/Assert.js")
-var Library = require("../Library.js")
-var PrismarineWorld = Library.PrismarineWorld
-var PrismarineWorldSync = Library.PrismarineWorldSync
-var Vec3 = Library.Vec3
 
 // Cache the generators, so we don't have to keep requiring them.
 

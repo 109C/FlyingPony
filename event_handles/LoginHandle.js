@@ -5,7 +5,6 @@ var EntitySpawnEvent = require("../events/EntitySpawnEvent.js")
 module.exports = function(Server, Event){
     var Player = Event.getPlayer()
     
-    
     Player.world.players[Player.username] = Player
     Player.world.entities[Player.ueid] = Player
     Server.players[Player.username] = Player

@@ -54,6 +54,11 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
             return false
         }
     }
+    this.isBlockLoaded = function(Position){
+        Assert(Validate.isVec3(Position) == true, "Invalid position, should be a vec3")
+        var XZ = Convert.posToChunk(Position)
+        return this.isChunkLoaded(XZ[0], XZ[1])
+    }
     this.requestChunkLoad = function(ChunkX, ChunkZ){
         // TODO: when world saving is implemented, load the chunks from disk.
         Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")

@@ -64,7 +64,7 @@ module.exports = function Player(UEID, Client, World){
         
         this.diggingBlock = Position
         this.diggingBlockFace = Face
-        var DiggingBlock = this.rawWorld.getBlock(Position)
+        var DiggingBlock = this.world.getBlock(Position)
         
         // Check if we can dig at all
         if(this.gamemode == 2 || this.gamemode == 3){
@@ -115,7 +115,7 @@ module.exports = function Player(UEID, Client, World){
         // Break the block if the digging time is up.
         if(this.diggingTimeLeft != null && this.diggingTimeLeft < 0.05){
             if(this.gamemode == 0){
-                var BrokenStack = new ItemStack({id:this.rawWorld.getBlock(this.diggingBlock).type}, 1)
+                var BrokenStack = new ItemStack({id:this.world.getBlock(this.diggingBlock).type}, 1)
                 var DroppedStack = new DroppedItemEntity(this.world.generateUEID(), BrokenStack, this.world)
                 
                 DroppedStack.teleportTo(this.diggingBlock)
