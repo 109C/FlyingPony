@@ -1,23 +1,28 @@
 //
 
 var util = require("util")
+var Assert = require("../util/Assert.js")
 var Library = require("../Library.js")
 var PrismarineWorld = Library.PrismarineWorld
 var PrismarineWorldSync = Library.PrismarineWorldSync
 var Vec3 = Library.Vec3
 
-var World;
+// Cache the generators, so we don't have to keep requiring them.
+
+var Generators = {}
 
 module.exports = function ChunkProcess(RequestArgs, Query, Done){
     var Args = JSON.parse(RequestArgs)
     
-    if(Args.Generator){
-        World = new PrismarineWorldSync(new PrismarineWorld(require(Args.Generator)))
-        Done(1);
-    }else if(typeof Args.ChunkX == 'number' && typeof Args.ChunkZ == 'number'){
-        var Chunk = World.getColumn(Args.ChunkX, Args.ChunkZ)
-        Done(JSON.stringify(Chunk.dump()));
-    }else{
-        throw new Error("Invalid args: " + RequestArgs)
+    Assert(typeof Args.Generator == 'string', "Invalid generator, should be path")
+    Assert(typeof Args.ChunkX == 'number', "Invalid chunk x co-ordinate")
+    Assert(typeof Args.ChunkZ == 'number', "Invalid chunk z co-ordinate")
+    Assert(typeof Args.Seed == 'string', "Invalid seed, it should be a string")
+    
+    if(Generators[Args.Generator] == undefined){
+        Generators[Args.Generator] = require(Args.Generator)
     }
+    
+    var Chunk = Generators[Args.Generator](Args.ChunkX, Args.ChunkZ, Args.Seed)
+    Done(JSON.stringify(Chunk.dump()))
 }

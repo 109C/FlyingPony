@@ -1,8 +1,10 @@
 //
 
+var path = require("path")
 var Library = require("./Library.js")
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
+var ParallelProcesses = Library.ParallelProcesses
 var Vec3 = Library.Vec3
 
 var Logger = require("./logger/Logger")
@@ -27,7 +29,7 @@ var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
-Server.Overworld = new World(Server, __dirname + "/world/OverworldGenerator.js")
+Server.Overworld = new World(Server, __dirname + "/world/OverworldGenerator.js", JSON.stringify(123456789))
 
 Server.worlds = [Server.Overworld]
 
@@ -35,9 +37,14 @@ Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
 Server.PluginManager = new PluginManager()
 Server.MinecraftProtocolServer = MinecraftProtocol.createServer(Library.internal.Config)
-Server.Config = Library.internal.Config
 Server.eventLoop = EventLoop
 
+/*
+|| Chunk generator processes manager. Any arbitrary amount of workers can be spawned.
+*/
+Server.ChunkGeneratorPool = new ParallelProcesses(path.resolve(__dirname + "/process/ChunkProc.js"), 2)
+
+Server.Config = Library.internal.Config
 Server.UUID = Library.UUID
 
 /*

@@ -14,7 +14,7 @@ var Assert = require("../util/Assert.js")
 var Validate = require("../util/Validate.js")
 var Convert = require("../util/Convert.js")
 
-module.exports = function World(Server, WorldGeneratorPath){
+module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
     Assert(typeof Server == "object", "Invalid server")
     Assert(typeof WorldGeneratorPath == "string", "Invalid world generator path, should be string")
     
@@ -30,13 +30,8 @@ module.exports = function World(Server, WorldGeneratorPath){
     */
     this.PrismarineWorld = new PrismarineWorldSync(new PrismarineWorld(DummyGenerator))
     
-    /* We pass an absolute path because paraproc uses require().
-    || One worker is enough for now, but might be increased if we multicast the generator
-    || to the workers.
-    */
-    this.ProcessManager = new ParallelProcesses(path.resolve(__dirname + "/../process/ChunkProc.js"), 1)
-    this.ProcessManager.run(JSON.stringify({Generator: path.resolve(WorldGeneratorPath)}), function(){})
-    
+    this.seed = WorldSeed
+    this.generatorPath = path.resolve(WorldGeneratorPath)
     this.loadedChunks = {}
     this.generatingChunks = {}
     
@@ -69,10 +64,12 @@ module.exports = function World(Server, WorldGeneratorPath){
         this.generatingChunks[ChunkX + "|" + ChunkZ] = true
         
         var QueryArgs = {
+            Generator: this.generatorPath,
+            Seed: this.seed,
             ChunkX: ChunkX,
             ChunkZ: ChunkZ
         }
-        this.ProcessManager.run(JSON.stringify(QueryArgs), function(Response){
+        Server.ChunkGeneratorPool.run(JSON.stringify(QueryArgs), function(Response){
             var BufferArray = JSON.parse(Response).data
             var ChunkBuffer = new Buffer(BufferArray)
             var NewChunk = new PrismarineChunk()

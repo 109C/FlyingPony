@@ -16,7 +16,7 @@ module.exports = function Entity(UEID, World){
     
     Inheritance({}, this)
     
-    this.position = new Vec3(0, 16, 0)
+    this.position = new Vec3(0, 32, 0)
     this.velocity = new Vec3(0, 0, 0)
     this.terminalVelocity = 4
     this.gravityVelocity = 0.08
