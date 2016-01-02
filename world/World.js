@@ -12,6 +12,7 @@ var nameToBlock = Library.internal.blockNameToBlock
 
 var Assert = require("../util/Assert.js")
 var Validate = require("../util/Validate.js")
+var Convert = require("../util/Convert.js")
 
 module.exports = function World(Server, WorldGeneratorPath){
     Assert(typeof Server == "object", "Invalid server")
@@ -59,6 +60,7 @@ module.exports = function World(Server, WorldGeneratorPath){
         }
     }
     this.requestChunkLoad = function(ChunkX, ChunkZ){
+        // TODO: when world saving is implemented, load the chunks from disk.
         Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")
         Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
         
@@ -83,10 +85,29 @@ module.exports = function World(Server, WorldGeneratorPath){
         })
     }
     this.getChunk = function(ChunkX, ChunkZ){
-        return this.PrismarineWorld.getColumn(ChunkX, ChunkZ)
+        Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")
+        Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
+        if(this.isChunkLoaded(ChunkX, ChunkZ) == true){
+            return this.PrismarineWorld.getColumn(ChunkX, ChunkZ)
+        }else{
+            throw new Error("Invalid chunk request, the chunk not loaded.")
+        }
     }
-    this.setChunk = function(ChunkX, ChunkZ, Chunk){}
-    this.getBlock = function(Position){}
+    this.setChunk = function(ChunkX, ChunkZ, Chunk){
+        Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")
+        Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
+        Assert(typeof Chunk == 'object', "Invalid chunk, should be instance of prismarine-chunk")
+        
+        this.PrismarineWorld.setColumn(ChunkX, ChunkZ, Chunk)
+        this.loadedChunks[ChunkX + "|" + ChunkZ] = true
+    }
+    this.getBlock = function(Position){
+        Assert(Validate.isVec3(Position) == true, "Invalid position, should be a vec3")
+        var XZ = Convert.posToChunk(Position)
+        Assert(this.isChunkLoaded(XZ[0], XZ[1]) == true, "Invalid position, chunk is not loaded")
+        
+        return this.PrismarineWorld.getBlock(Position)
+    }
     this.setBlock = function(Position, BlockName, BlockMeta){
         Assert(Validate.isVec3(Position) == true, "Invalid position, should be a vec3")
         Assert(typeof BlockName == "string", "Invalid block name, should be string")
