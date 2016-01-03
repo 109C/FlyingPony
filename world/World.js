@@ -64,7 +64,8 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")
         Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
         
-        if(this.generatingChunks[ChunkX + "|" + ChunkZ] != undefined) return;
+        if(this.isChunkLoaded(ChunkX, ChunkZ) == true) return;
+        if(this.generatingChunks[ChunkX + "|" + ChunkZ] == true) return;
         
         this.generatingChunks[ChunkX + "|" + ChunkZ] = true
         
@@ -75,11 +76,12 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
             ChunkZ: ChunkZ
         }
         Server.ChunkGeneratorPool.run(JSON.stringify(QueryArgs), function(Response){
+            if(Self == undefined) return;
+            
             var BufferArray = JSON.parse(Response).data
             var ChunkBuffer = new Buffer(BufferArray)
             var NewChunk = new PrismarineChunk()
             NewChunk.load(ChunkBuffer)
-
             
             Self.PrismarineWorld.setColumn(ChunkX, ChunkZ, NewChunk)
             Self.loadedChunks[ChunkX + "|" + ChunkZ] = true
@@ -126,6 +128,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         })
         
     }
+    
     this.getNearbyPlayers = function(Position){
         Assert(Validate.isVec3(Position) == true, "Invalid position, should be vec3")
         

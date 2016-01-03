@@ -29,7 +29,7 @@ var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
-Server.Overworld = new World(Server, __dirname + "/world/OverworldGenerator.js", JSON.stringify(123456789))
+Server.Overworld = new World(Server, __dirname + "/world/generators/OverworldGenerator.js", JSON.stringify(123456789))
 
 Server.worlds = [Server.Overworld]
 
@@ -44,7 +44,6 @@ Server.eventLoop = EventLoop
 */
 Server.ChunkGeneratorPool = new ParallelProcesses(path.resolve(__dirname + "/process/ChunkProc.js"), 2)
 
-Server.Config = Library.internal.Config
 Server.UUID = Library.UUID
 
 /*
