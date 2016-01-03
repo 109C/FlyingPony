@@ -172,8 +172,8 @@ module.exports = function Player(UEID, Client, World){
                 x: Entity.position.x * 32,
                 y: Entity.position.y * 32,
                 z: Entity.position.z * 32,
-                yaw: Entity.yaw,
-                pitch: Entity.pitch,
+                yaw: Convert.Convert360To256(Entity.yaw),
+                pitch: Convert.Convert360To256(Entity.pitch),
                 currentItem: 0,
                 metadata: []
             })
@@ -186,8 +186,8 @@ module.exports = function Player(UEID, Client, World){
                 y: Entity.position.y * 32,
                 z: Entity.position.z * 32,
                 pitch: Entity.pitch,
-                yaw: Entity.yaw,
-                headPitch: Entity.pitch,
+                yaw: Convert.Convert360To256(Entity.yaw),
+                pitch: Convert.Convert360To256(Entity.pitch),
                 velocityX: 0,
                 velocityY: 0,
                 velocityZ: 0,
@@ -201,8 +201,8 @@ module.exports = function Player(UEID, Client, World){
                 x : Entity.position.x * 32,
                 y : Entity.position.y * 32,
                 z : Entity.position.z * 32,
-                yaw: Entity.yaw,
-                pitch: Entity.pitch,
+                yaw: Convert.Convert360To256(Entity.yaw),
+                pitch: Convert.Convert360To256(Entity.pitch),
                 objectData: {
                     intField: 0,
                     velocityX: 0,

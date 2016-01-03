@@ -51,17 +51,21 @@ module.exports = function(Server, Event){
     Player.loadingChunks = SentChunkThisTick
     
     if(Player.loadingChunks == false){
+        // Spawn the entities near to the player.
         for(var EntityKey in Player.nearbyEntities){
         	var Entity = Player.nearbyEntities[EntityKey]
         	
-        	// Spawn the appropriate entities client side.
             if(Player.hasSpawnedEntity(Entity) == false && Entity.hasValidStance()){
                 Player.sendEntitySpawn(Entity)
                 break; // Only spawn one entity per tick.
             }
+        }
+        // Despawn the entities that are now too far away from the player.
+        for(var EntityKey in Player.spawnedEntities){
+            var Entity = Player.world.entities[EntityKey]
             
-            // Spawn the appropriate entities client side.
-            if(Player.distanceTo(Entity) > 64){
+            // Despawn the entity if it has despawned in the world.
+            if(Entity == undefined || Entity.distanceTo(Player) > Library.internal.Config["view-distance-entities"]){
                 Player.sendEntityDespawn(Entity)
             }
         }
