@@ -14,8 +14,6 @@ var EventLoop = require("./event_loop/EventLoop.js")
 var Scheduler = require("./event_loop/Scheduler.js")
 var PluginManager = require("./plugin_manager/PluginManager")
 
-var OverworldGenerator = require("./world/OverworldGenerator.js")
-
 var PlayerEntity = require("./entity/PlayerEntity.js")
 var World = require("./world/World.js")
 

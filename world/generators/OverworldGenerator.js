@@ -1,6 +1,6 @@
 //
 
-var Library = require("../Library.js")
+var Library = require("../../Library.js")
 var PrismarineChunk = Library.PrismarineChunk
 var Vec3 = Library.Vec3
 
