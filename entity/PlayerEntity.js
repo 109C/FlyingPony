@@ -21,6 +21,8 @@ module.exports = function Player(UEID, Client, World){
     Assert(typeof Client == 'object', "Client must be an object or instance of NMP client")
     Assert(typeof Client.username == 'string', "Client's username must be a string")
     Assert(typeof Client.write == 'function', "Client must implement a write method")
+    Assert(typeof Client.socket == 'object', "Client must implement a socket object")
+    Assert(typeof Client.socket.remoteAddress == 'string', "Client must implement socket.remoteAddress")
     
     Inheritance(new Entity(UEID, World), this)
     

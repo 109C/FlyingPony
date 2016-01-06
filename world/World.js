@@ -12,11 +12,14 @@ var nameToBlock = Library.internal.blockNameToBlock
 
 var Assert = require("../util/Assert.js")
 var Validate = require("../util/Validate.js")
+var Inheritance = require("../util/Inheritance.js")
 var Convert = require("../util/Convert.js")
 
 module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
     Assert(typeof Server == "object", "Invalid server")
     Assert(typeof WorldGeneratorPath == "string", "Invalid world generator path, should be string")
+    
+    Inheritance({}, this)
     
     var Self = this;
     
