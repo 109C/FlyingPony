@@ -56,7 +56,15 @@
         "args": [
             {},
             "/path/to/generator",
-            123456789
+            "123456789"
+        ]
+    },
+    "world/WorldBlock.js":{
+        "abstract": true,
+        "args": [
+            {},
+            "/path/to/generator",
+            "123456789"
         ]
     },
     "logger/Logger.js":{

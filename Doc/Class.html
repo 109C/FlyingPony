@@ -1,9 +1,10 @@
 <!-- DO NOT EDIT THIS PAGE, IT WAS AUTOMATICALLY GENERATED -->
-<!-- Instead, please edit ClassTemplate.html, or ClassHeader.html --><div>
+<!-- Instead, please edit ClassTemplate.html, or ClassHeader.html -->
+<div>
     <h1>
         Classes:
     </h1><br>
-    <a href = "#DroppedItem">DroppedItem</a><br><a href = "#Entity">Entity</a><br><a href = "#EntityMob">EntityMob</a><br><a href = "#Logger">Logger</a><br><a href = "#Player">Player</a><br><a href = "#World">World</a><br><a href = "#Zombie">Zombie</a><br>
+    <a href = "#DroppedItem">DroppedItem</a><br><a href = "#Entity">Entity</a><br><a href = "#EntityMob">EntityMob</a><br><a href = "#Logger">Logger</a><br><a href = "#Player">Player</a><br><a href = "#World">World</a><br><a href = "#WorldBlock">WorldBlock</a><br><a href = "#Zombie">Zombie</a><br>
 </div>
 <br>
 <div id = "[Root]">
@@ -63,11 +64,21 @@
         World (world/World.js)
     </h1>
     
+    Inherits from  <a href = "#WorldBlock">[WorldBlock]</a> .<br>
+    It has the following methods:<br>
+    <b> generateUEID(...) </b><br><b> getBlock(...) </b><br><b> getChunk(...) </b><br><b> getNearbyPlayers(...) </b><br><b> isBlockLoaded(...) </b><br><b> isChunkLoaded(...) </b><br><b> requestChunkLoad(...) </b><br><b> setBlock(...) </b><br><b> setChunk(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> entities </b><br><b> generatingChunks </b><br><b> generatorPath </b><br><b> Logger </b><br><b> players </b><br><b> seed </b><br>
+</div><div>
+    <h1 id = "WorldBlock">
+        WorldBlock (world/WorldBlock.js)
+    </h1>
+    
     Inherits from  <a href = "#[Root]">[[Root]]</a> .<br>
     It has the following methods:<br>
-    <b> generateUEID(...) </b><br><b> getBlock(...) </b><br><b> getChunk(...) </b><br><b> getNearbyPlayers(...) </b><br><b> isBlockLoaded(...) </b><br><b> isChunkLoaded(...) </b><br><b> log(...) </b><br><b> requestChunkLoad(...) </b><br><b> setBlock(...) </b><br><b> setChunk(...) </b><br>
+    <b> getBlock(...) </b><br><b> getChunk(...) </b><br><b> getNearbyPlayers(...) </b><br><b> isBlockLoaded(...) </b><br><b> isChunkLoaded(...) </b><br><b> requestChunkLoad(...) </b><br><b> setBlock(...) </b><br><b> setChunk(...) </b><br><b> tick(...) </b><br>
     It has the following attributes:<br>
-    <b> entities </b><br><b> generatingChunks </b><br><b> generatorPath </b><br><b> loadedChunks </b><br><b> Logger </b><br><b> players </b><br><b> seed </b><br>
+    <b> generatingChunks </b><br><b> generatorPath </b><br><b> Logger </b><br><b> seed </b><br>
 </div><div>
     <h1 id = "Logger">
         Logger (logger/Logger.js)
