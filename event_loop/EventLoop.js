@@ -12,6 +12,7 @@ var MoveHandle = require("../event_handles/MoveHandle.js")
 var LookHandle = require("../event_handles/LookHandle.js")
 var EntityUseHandle = require("../event_handles/EntityUseHandle.js")
 var PlayerDigHandle = require("../event_handles/PlayerDigHandle.js")
+var ChunkLoadHandle = require("../event_handles/ChunkLoadHandle.js")
 
 var PlayerUpdateEvent = require("../events/PlayerUpdateEvent.js")
 
@@ -22,17 +23,12 @@ module.exports = function(Server){
         Server.Scheduler.addEvent(1, new PlayerUpdateEvent(Server.players[CurrentPlayer]))
     }
     
-    // Add all the entities, in all the worlds that are not players to be ticked.
+    // Tick all the worlds
     for(var WorldKey in Server.worlds){
         var World = Server.worlds[WorldKey]
-        for(var EntityKey in World.entities){
-            var Entity = World.entities[EntityKey]
-            
-            Entity.tick().forEach(function(Event){
-                Server.Scheduler.addEvent(1, Event)
-            })
-            
-        }
+        World.tick().forEach(function(Event){
+            Server.Scheduler.addEvent(1, Event)
+        })
     }
     
     
@@ -87,6 +83,8 @@ module.exports = function(Server){
             
         }else if(EventType == "PlayerDigEvent"){
             PlayerDigHandle(Server, Event)
+        }else if(EventType == "ChunkLoadEvent"){
+            ChunkLoadHandle(Server, Event)
         }
     }
     
