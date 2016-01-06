@@ -18,27 +18,27 @@ for(Key in EventDirList){
 module.exports = function PluginInterface(Server, Plugin){
     
     this.registerCommand = function(NameCommand, Callback){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         Plugin.commands[NameCommand.toLowerCase()] = Callback
     }
     this.getEvent = function(EventName){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         return Events[EventName]
     }
     this.getPlayer = function(PlayerName){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         return Server.players[PlayerName]
     }
     this.generateUEID = function(){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         return Server.generateUEID()
     }
     this.on = function(EventName, Callback){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         Plugin.listeners[EventName.toLowerCase()] = Callback
     }
     this.emit = function(TicksFromNow, Event){
-        if(!Plugin) return;
+        if(!Plugin.enabled) return;
         if(Event == undefined){
             Event = TicksFromNow
             Server.Scheduler.addEvent(1, Event)
