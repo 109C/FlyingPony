@@ -12,7 +12,7 @@ module.exports = function(Server, Event){
     Player.changeGamemode(Library.internal.Config["gamemode"])
     Player.sendLoginInfo()
             
-    Player.updateClientPosition()
+    Player.sendClientPosition()
     Player.sendPlayerInfos()
     Player.sendInventory()
     

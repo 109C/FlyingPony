@@ -1,0 +1,81 @@
+<!-- DO NOT EDIT THIS PAGE, IT WAS AUTOMATICALLY GENERATED -->
+<!-- Instead, please edit ClassTemplate.html, or ClassHeader.html --><div>
+    <h1>
+        Classes:
+    </h1><br>
+    <a href = "#DroppedItem">DroppedItem</a><br><a href = "#Entity">Entity</a><br><a href = "#EntityMob">EntityMob</a><br><a href = "#Logger">Logger</a><br><a href = "#Player">Player</a><br><a href = "#World">World</a><br><a href = "#Zombie">Zombie</a><br>
+</div>
+<br>
+<div id = "[Root]">
+    <b>Note: [Root] is not an actual class, it just represents inheriting from nothing.</b>
+</div><div>
+    <h1 id = "Entity">
+        Entity (entity/Entity.js)
+    </h1>
+    
+    Inherits from  <a href = "#[Root]">[[Root]]</a> .<br>
+    It has the following methods:<br>
+    <b> calculateNearbyEntities(...) </b><br><b> changeWorld(...) </b><br><b> distanceTo(...) </b><br><b> doAI(...) </b><br><b> doGravity(...) </b><br><b> doPhysics(...) </b><br><b> getPhysicalHeight(...) </b><br><b> getPhysicalWidth(...) </b><br><b> hasMetadataPacket(...) </b><br><b> hasValidStance(...) </b><br><b> isGravitational(...) </b><br><b> isMob(...) </b><br><b> isObject(...) </b><br><b> isPlayer(...) </b><br><b> teleportTo(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> gravityVelocity </b><br><b> nearbyEntities </b><br><b> nearbyPlayers </b><br><b> nearbyRange </b><br><b> pitch </b><br><b> position </b><br><b> terminalVelocity </b><br><b> ueid </b><br><b> uuid </b><br><b> velocity </b><br><b> world </b><br><b> yaw </b><br>
+</div><div>
+    <h1 id = "EntityMob">
+        EntityMob (entity/EntityMob.js)
+    </h1>
+    
+    Inherits from  <a href = "#Entity">[Entity]</a> .<br>
+    It has the following methods:<br>
+    <b> calculateNearbyEntities(...) </b><br><b> changeWorld(...) </b><br><b> distanceTo(...) </b><br><b> doAI(...) </b><br><b> doGravity(...) </b><br><b> doPhysics(...) </b><br><b> getMobId(...) </b><br><b> getPhysicalHeight(...) </b><br><b> getPhysicalWidth(...) </b><br><b> hasMetadataPacket(...) </b><br><b> hasValidStance(...) </b><br><b> isGravitational(...) </b><br><b> isMob(...) </b><br><b> isObject(...) </b><br><b> isPlayer(...) </b><br><b> teleportTo(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> armor </b><br><b> gravityVelocity </b><br><b> heldItem </b><br><b> nearbyEntities </b><br><b> nearbyPlayers </b><br><b> nearbyRange </b><br><b> pitch </b><br><b> position </b><br><b> terminalVelocity </b><br><b> ueid </b><br><b> uuid </b><br><b> velocity </b><br><b> world </b><br><b> yaw </b><br>
+</div><div>
+    <h1 id = "DroppedItem">
+        DroppedItem (entity/DroppedItemEntity.js)
+    </h1>
+    
+    Inherits from  <a href = "#Entity">[Entity]</a> .<br>
+    It has the following methods:<br>
+    <b> calculateNearbyEntities(...) </b><br><b> changeWorld(...) </b><br><b> distanceTo(...) </b><br><b> doAI(...) </b><br><b> doGravity(...) </b><br><b> doPhysics(...) </b><br><b> getMetadataPacket(...) </b><br><b> getObjectId(...) </b><br><b> getPhysicalHeight(...) </b><br><b> getPhysicalWidth(...) </b><br><b> hasMetadataPacket(...) </b><br><b> hasValidStance(...) </b><br><b> isGravitational(...) </b><br><b> isMob(...) </b><br><b> isObject(...) </b><br><b> isPlayer(...) </b><br><b> teleportTo(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> contents </b><br><b> gravityVelocity </b><br><b> metadataKey </b><br><b> metadataType </b><br><b> nearbyEntities </b><br><b> nearbyPlayers </b><br><b> nearbyRange </b><br><b> pitch </b><br><b> position </b><br><b> terminalVelocity </b><br><b> ueid </b><br><b> uuid </b><br><b> velocity </b><br><b> world </b><br><b> yaw </b><br>
+</div><div>
+    <h1 id = "Player">
+        Player (entity/PlayerEntity.js)
+    </h1>
+    
+    Inherits from  <a href = "#Entity">[Entity]</a> .<br>
+    It has the following methods:<br>
+    <b> calculateNearbyEntities(...) </b><br><b> changeGamemode(...) </b><br><b> changeWorld(...) </b><br><b> disconnect(...) </b><br><b> distanceTo(...) </b><br><b> doAI(...) </b><br><b> doGravity(...) </b><br><b> doPhysics(...) </b><br><b> finishDigging(...) </b><br><b> getPhysicalHeight(...) </b><br><b> getPhysicalWidth(...) </b><br><b> hasMetadataPacket(...) </b><br><b> hasSpawnedEntity(...) </b><br><b> hasValidStance(...) </b><br><b> isDigging(...) </b><br><b> isGravitational(...) </b><br><b> isMob(...) </b><br><b> isObject(...) </b><br><b> isPlayer(...) </b><br><b> resetDigging(...) </b><br><b> sendBlockUpdate(...) </b><br><b> sendChunkData(...) </b><br><b> sendClientPosition(...) </b><br><b> sendEntityDespawn(...) </b><br><b> sendEntityPosition(...) </b><br><b> sendEntitySpawn(...) </b><br><b> sendGamemode(...) </b><br><b> sendInventory(...) </b><br><b> sendLoginInfo(...) </b><br><b> sendPlayerInfos(...) </b><br><b> startDigging(...) </b><br><b> teleportTo(...) </b><br><b> tellRaw(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> Client </b><br><b> craftingArea </b><br><b> craftingOutput </b><br><b> diggingBlock </b><br><b> diggingBlockFace </b><br><b> diggingTimeLeft </b><br><b> gamemode </b><br><b> gravityVelocity </b><br><b> heldSlot </b><br><b> inventory </b><br><b> loadingChunks </b><br><b> nearbyEntities </b><br><b> nearbyPlayers </b><br><b> nearbyRange </b><br><b> pitch </b><br><b> position </b><br><b> sentChunks </b><br><b> spawnedEntities </b><br><b> terminalVelocity </b><br><b> ueid </b><br><b> username </b><br><b> uuid </b><br><b> velocity </b><br><b> world </b><br><b> yaw </b><br>
+</div><div>
+    <h1 id = "Zombie">
+        Zombie (entity/ZombieEntity.js)
+    </h1>
+    
+    Inherits from  <a href = "#EntityMob">[EntityMob]</a> .<br>
+    It has the following methods:<br>
+    <b> calculateNearbyEntities(...) </b><br><b> changeWorld(...) </b><br><b> distanceTo(...) </b><br><b> doAI(...) </b><br><b> doGravity(...) </b><br><b> doPhysics(...) </b><br><b> getMobId(...) </b><br><b> getPhysicalHeight(...) </b><br><b> getPhysicalWidth(...) </b><br><b> hasMetadataPacket(...) </b><br><b> hasValidStance(...) </b><br><b> isGravitational(...) </b><br><b> isMob(...) </b><br><b> isObject(...) </b><br><b> isPlayer(...) </b><br><b> teleportTo(...) </b><br><b> tick(...) </b><br>
+    It has the following attributes:<br>
+    <b> armor </b><br><b> gravityVelocity </b><br><b> heldItem </b><br><b> nearbyEntities </b><br><b> nearbyPlayers </b><br><b> nearbyRange </b><br><b> pitch </b><br><b> position </b><br><b> terminalVelocity </b><br><b> ueid </b><br><b> uuid </b><br><b> velocity </b><br><b> world </b><br><b> yaw </b><br>
+</div><div>
+    <h1 id = "World">
+        World (world/World.js)
+    </h1>
+    
+    Inherits from  <a href = "#[Root]">[[Root]]</a> .<br>
+    It has the following methods:<br>
+    <b> generateUEID(...) </b><br><b> getBlock(...) </b><br><b> getChunk(...) </b><br><b> getNearbyPlayers(...) </b><br><b> isBlockLoaded(...) </b><br><b> isChunkLoaded(...) </b><br><b> log(...) </b><br><b> requestChunkLoad(...) </b><br><b> setBlock(...) </b><br><b> setChunk(...) </b><br>
+    It has the following attributes:<br>
+    <b> entities </b><br><b> generatingChunks </b><br><b> generatorPath </b><br><b> loadedChunks </b><br><b> Logger </b><br><b> players </b><br><b> seed </b><br>
+</div><div>
+    <h1 id = "Logger">
+        Logger (logger/Logger.js)
+    </h1>
+    
+    Inherits from  <a href = "#[Root]">[[Root]]</a> .<br>
+    It has the following methods:<br>
+    <b> log(...) </b><br>
+    It has the following attributes:<br>
+    
+</div>

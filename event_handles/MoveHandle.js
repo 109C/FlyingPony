@@ -8,6 +8,6 @@ module.exports = function(Server, Event){
     }
     
     if(Entity.isPlayer() && Event.isTeleport()){
-        Entity.updateClientPosition()
+        Entity.sendClientPosition()
     }
 }

@@ -31,7 +31,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
     /* The prismarine world generates empty chunks, and they are filled in when we 
     || get the correct chunks from the chunk generator process.
     */
-    this.PrismarineWorld = new PrismarineWorldSync(new PrismarineWorld(DummyGenerator))
+    this._PrismarineWorld = new PrismarineWorldSync(new PrismarineWorld(DummyGenerator))
     
     this.seed = WorldSeed
     this.generatorPath = path.resolve(WorldGeneratorPath)
@@ -86,7 +86,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
             var NewChunk = new PrismarineChunk()
             NewChunk.load(ChunkBuffer)
             
-            Self.PrismarineWorld.setColumn(ChunkX, ChunkZ, NewChunk)
+            Self._PrismarineWorld.setColumn(ChunkX, ChunkZ, NewChunk)
             Self.loadedChunks[ChunkX + "|" + ChunkZ] = true
             delete Self.generatingChunks[ChunkX + "|" + ChunkZ]
         })
@@ -95,7 +95,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         Assert(typeof ChunkX == 'number', "Invalid chunk x co-ordinate")
         Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
         if(this.isChunkLoaded(ChunkX, ChunkZ) == true){
-            return this.PrismarineWorld.getColumn(ChunkX, ChunkZ)
+            return this._PrismarineWorld.getColumn(ChunkX, ChunkZ)
         }else{
             throw new Error("Invalid chunk request, the chunk not loaded.")
         }
@@ -105,7 +105,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         Assert(typeof ChunkX == 'number', "Invalid chunk z co-ordinate")
         Assert(typeof Chunk == 'object', "Invalid chunk, should be instance of prismarine-chunk")
         
-        this.PrismarineWorld.setColumn(ChunkX, ChunkZ, Chunk)
+        this._PrismarineWorld.setColumn(ChunkX, ChunkZ, Chunk)
         this.loadedChunks[ChunkX + "|" + ChunkZ] = true
     }
     this.getBlock = function(Position){
@@ -113,7 +113,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         var XZ = Convert.posToChunk(Position)
         Assert(this.isChunkLoaded(XZ[0], XZ[1]) == true, "Invalid position, chunk is not loaded")
         
-        return this.PrismarineWorld.getBlock(Position)
+        return this._PrismarineWorld.getBlock(Position)
     }
     this.setBlock = function(Position, BlockName, BlockMeta){
         Assert(Validate.isVec3(Position) == true, "Invalid position, should be a vec3")
@@ -121,7 +121,7 @@ module.exports = function World(Server, WorldGeneratorPath, WorldSeed){
         Assert(typeof nameToBlock[BlockName] == 'object', "Invalid block name, not found in name to block table")
         Assert(typeof BlockMeta == "number" || typeof BlockMeta == "undefined" || BlockMeta === null, "Invalid block meta")
         
-        this.PrismarineWorld.setBlock(Position, {
+        this._PrismarineWorld.setBlock(Position, {
                 type: nameToBlock[BlockName].id,
                 metadata: BlockMeta
         })

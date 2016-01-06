@@ -265,7 +265,7 @@ module.exports = function Player(UEID, Client, World){
             gameMode: this.gamemode
         })
     }
-    this.updateClientPosition = function(){
+    this.sendClientPosition = function(){
        this.Client.write("position", {
                 "x": this.position.x,
                 "y": this.position.y,

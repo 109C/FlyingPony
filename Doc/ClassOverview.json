@@ -1,0 +1,68 @@
+{
+    "entity/Entity.js": {
+        "abstract": true,
+        "args": [
+            42,
+            {
+                "complex": "world"
+            }
+        ]
+    },
+    "entity/EntityMob.js": {
+        "abstract": true,
+        "args": [
+            42,
+            {
+                "complex": "world"
+            }
+        ]
+    },
+    "entity/DroppedItemEntity.js": {
+        "abstract": false,
+        "args": [
+            42,
+            {
+                "complex" : "item" 
+            },
+            {
+                "complex": "world"
+            }
+            
+        ]
+    },
+    "entity/PlayerEntity.js": {
+        "abstract": false,
+        "args": [
+            42,
+            {
+                "complex": "client"
+            },
+            {
+                "complex": "world"
+            }
+        ]
+    },
+    "entity/ZombieEntity.js": {
+        "abstract": false,
+        "args": [
+            42,
+            {
+                "complex": "world"
+            }
+        ]
+    },
+    "world/World.js":{
+        "abstract": false,
+        "args": [
+            {},
+            "/path/to/generator",
+            123456789
+        ]
+    },
+    "logger/Logger.js":{
+        "abstract": false,
+        "args": [
+            "test instance"
+        ]
+    }
+}
