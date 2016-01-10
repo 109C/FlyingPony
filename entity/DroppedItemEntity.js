@@ -16,6 +16,9 @@ module.exports = function DroppedItem(UEID, Item, World){
     this.isObject = function(){
         return true
     }
+    this.isGravitational = function(){
+        return true
+    }
     this.getObjectId = function(){
         return 2
     }

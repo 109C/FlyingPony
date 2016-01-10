@@ -34,7 +34,7 @@ module.exports = function Entity(UEID, World){
         var Event;
         
         // In case the place we are isn't loaded.
-        if(this.world.isBlockLoaded(this.position) == false) return [];
+        if(this.world == undefined || this.world.isBlockLoaded(this.position) == false) return [];
         
         this.calculateNearbyEntities()
         
