@@ -1,22 +1,31 @@
 //
 
 var path = require("path")
+var fs = require("fs")
 var Library = require("./Library.js")
+var NBT = Library.PrismarineNBT
+var NBTParse = Library.NBTParse
 var MinecraftProtocol = Library.MinecraftProtocol
 var MinecraftData = Library.MinecraftData
 var ParallelProcesses = Library.ParallelProcesses
 var Vec3 = Library.Vec3
 
+
+/* Utilities */
 var Logger = require("./logger/Logger")
 var ClientAssert = require("./util/ClientAssert.js")
+var WorldInitScript = require("./util/WorldInitScript.js")
 
+/* Core classes */
 var EventLoop = require("./event_loop/EventLoop.js")
 var Scheduler = require("./event_loop/Scheduler.js")
 var PluginManager = require("./plugin_manager/PluginManager")
 
+/* Classes */
 var PlayerEntity = require("./entity/PlayerEntity.js")
 var World = require("./world/World.js")
 
+/* Events */
 var LoginEvent = require("./events/LoginEvent.js")
 var LogoutEvent = require("./events/LogoutEvent.js")
 var IncomingMessageEvent = require("./events/IncomingMessageEvent.js")
@@ -27,9 +36,25 @@ var PlayerDigEvent = require("./events/PlayerDigEvent.js")
 
 var Server = {}
 
-Server.Overworld = new World(Server, __dirname + "/world/generators/OverworldGenerator.js", JSON.stringify(123456789))
+/* Init worlds */
 
-Server.worlds = [Server.Overworld]
+WorldInitScript(__dirname + "/" + Library.internal.Config["worlds-path"])
+
+var LevelData = NBTParse(fs.readFileSync(__dirname + "/" + Library.internal.Config["worlds-path"] + "level.dat")).value.Data.value
+
+Server.seed = LevelData.RandomSeed.value.join("")
+Server.worlds = {}
+
+Object.keys(Library.internal.Config["worlds"]).forEach(function(WorldName){
+    var WorldInfo = Library.internal.Config["worlds"][WorldName]
+    if(Library.internal.generators[WorldInfo.generator] == undefined) throw new Error("Invalid generator name, no such generator");
+    
+    var CurrentWorld = new World(Server, Library.internal.generators[WorldInfo.generator], Server.seed)
+    
+    Server.worlds[WorldName] = CurrentWorld
+})
+
+/* Init various things */
 
 Server.Logger = new Logger("Core")
 Server.Scheduler = new Scheduler()
@@ -61,7 +86,7 @@ Server.generateUEID = function(){
 }
 
 Server.bootHandles.PlayerLogin = function(Client){
-    var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.Overworld)
+    var CurrentPlayer = new PlayerEntity(Server.generateUEID(), Client, Server.worlds[Library.internal.Config["worlds-default-spawn"]])
     var Assert = ClientAssert(CurrentPlayer, Server)
     
     // Make sure the player isn't already logged in.

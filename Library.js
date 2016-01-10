@@ -1,6 +1,6 @@
 //
 
-var DefaultConfig = {
+var Config = {
     version: "1.8"
 }
 
@@ -8,14 +8,25 @@ var fs = require("fs")
 var Inheritance = require("./util/Inheritance.js")
 var Assert = require("./util/Assert.js")
 
-var MinecraftProtocol = require("./lib/minecraft-protocol")
-var MinecraftData = require("./lib/minecraft-data")(DefaultConfig.version)
-var PrismarineWorld = require("./lib/prismarine-world")
-var PrismarineChunk = require("./lib/prismarine-chunk")
-var PrismarineWorldSync = require("./lib/prismarine-world-sync")
-var Vec3 = require("./lib/vec3")
-var UUID = require("./lib/uuid-1345")
-var ParallelProcesses = require("./lib/parallel-processes/")
+
+try{
+    var Deasync = require("./lib/deasync")
+    var Deasyncp = require("./lib/deasyncp")
+    var MinecraftProtocol = require("./lib/minecraft-protocol")
+    var MinecraftData = require("./lib/minecraft-data")(Config.version)
+    var PrismarineAnvil = require("./lib/prismarine-provider-anvil")
+    var PrismarineChunk = require("./lib/prismarine-chunk")(Config.version)
+    var PrismarineNBT = require("./lib/prismarine-nbt")
+    var PrismarineWorld = require("./lib/prismarine-world")
+    var PrismarineWorldSync = require("./lib/prismarine-world-sync")
+    var Vec3 = require("./lib/vec3")
+    var UUID = require("./lib/uuid-1345")
+    var ParallelProcesses = require("./lib/parallel-processes/")
+}catch(e){
+    console.log("Something went wrong loading the libraries.")
+    console.log("Perhaps you didn't 'make install' ?")
+    throw e;
+}
 
 var BlockIdToBlock = {}
 var BlockNameToBlock = {}
@@ -27,25 +38,38 @@ for(var BlockKey in MinecraftData.blocks){
     BlockNameToBlock[CurrentBlock.name] = CurrentBlock
 }
 
+// Create generation table
+
+var Generators = {}
+
+fs.readdirSync(__dirname + "/world/generators").forEach(function(FileName){
+    Generators[FileName.slice(0, -3)] = __dirname + "/world/generators/" + FileName
+})
+
 Assert(Object.keys(BlockNameToBlock).length > 0, "Block name to block id lookup table is empty")
 
 // Load configuration.
-var Config = {}
-Inheritance(DefaultConfig, Config)
+var NewConfig;
+
 try{
-    Config = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
+    NewConfig = JSON.parse(fs.readFileSync(__dirname + "/FlyingPony.conf"))
 }catch(e){
-    console.log("Invalid configuration file. (FlyingPony.conf)")
+    console.log("There was a problem reading the configuration file. (FlyingPony.conf)")
     throw e;
 }
 
-Config.version = "1.8"
+Inheritance(NewConfig, Config)
 
 module.exports = {
+    Deasync: Deasync,
+    Deasyncp: Deasyncp,
+    NBTParse: Deasync(PrismarineNBT.parse),
     MinecraftProtocol: MinecraftProtocol,
     MinecraftData: MinecraftData,
+    PrismarineAnvil: PrismarineAnvil,
+    PrismarineChunk: PrismarineChunk,
+    PrismarineNBT: PrismarineNBT,
     PrismarineWorld: PrismarineWorld,
-    PrismarineChunk: PrismarineChunk(Config.version),
     PrismarineWorldSync: PrismarineWorldSync,
     Vec3: Vec3,
     UUID: UUID,
@@ -53,6 +77,7 @@ module.exports = {
     internal: {
         blockIdToBlock: BlockIdToBlock,
         blockNameToBlock: BlockNameToBlock,
-        Config: Config
+        Config: Config,
+        generators: Generators
     }
 }

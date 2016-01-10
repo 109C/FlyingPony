@@ -1,0 +1,209 @@
+{
+    "thundering": {
+        "type": "byte",
+        "value": 0
+    },
+    "LastPlayed": {
+        "type": "long",
+        "value": [
+            338,
+            74635416
+        ]
+    },
+    "DayTime": {
+        "type": "long",
+        "value": [
+            0,
+            6000
+        ]
+    },
+    "clearWeatherTime": {
+        "type": "int",
+        "value": 0
+    },
+    "BorderCenterZ": {
+        "type": "double",
+        "value": 0
+    },
+    "initialized": {
+        "type": "byte",
+        "value": 1
+    },
+    "BorderCenterX": {
+        "type": "double",
+        "value": 0
+    },
+    "RandomSeed": {
+        "type": "long",
+        "value": [
+            1101097043,
+            930551010
+        ]
+    },
+    "BorderSize": {
+        "type": "double",
+        "value": 60000000
+    },
+    "version": {
+        "type": "int",
+        "value": 19133
+    },
+    "BorderSizeLerpTarget": {
+        "type": "double",
+        "value": 60000000
+    },
+    "Time": {
+        "type": "long",
+        "value": [
+            0,
+            113124
+        ]
+    },
+    "allowCommands": {
+        "type": "byte",
+        "value": 1
+    },
+    "SpawnX": {
+        "type": "int",
+        "value": 653
+    },
+    "SpawnY": {
+        "type": "int",
+        "value": 4
+    },
+    "hardcore": {
+        "type": "byte",
+        "value": 0
+    },
+    "SpawnZ": {
+        "type": "int",
+        "value": 299
+    },
+    "SizeOnDisk": {
+        "type": "long",
+        "value": [
+            0,
+            0
+        ]
+    },
+    "generatorName": {
+        "type": "string",
+        "value": "flat"
+    },
+    "BorderWarningBlocks": {
+        "type": "double",
+        "value": 5
+    },
+    "rainTime": {
+        "type": "int",
+        "value": 28348
+    },
+    "BorderWarningTime": {
+        "type": "double",
+        "value": 15
+    },
+    "BorderSizeLerpTime": {
+        "type": "long",
+        "value": [
+            0,
+            0
+        ]
+    },
+    "GameType": {
+        "type": "int",
+        "value": 1
+    },
+    "BorderDamagePerBlock": {
+        "type": "double",
+        "value": 0.2
+    },
+    "MapFeatures": {
+        "type": "byte",
+        "value": 0
+    },
+    "BorderSafeZone": {
+        "type": "double",
+        "value": 5
+    },
+    "raining": {
+        "type": "byte",
+        "value": 0
+    },
+    "thunderTime": {
+        "type": "int",
+        "value": 75845
+    },
+    "generatorOptions": {
+        "type": "string",
+        "value": "3;minecraft:bedrock,52*minecraft:sandstone;2;"
+    },
+    "GameRules": {
+        "type": "compound",
+        "value": {
+            "doMobLoot": {
+                "type": "string",
+                "value": "true"
+            },
+            "showDeathMessages": {
+                "type": "string",
+                "value": "true"
+            },
+            "doMobSpawning": {
+                "type": "string",
+                "value": "false"
+            },
+            "doTileDrops": {
+                "type": "string",
+                "value": "true"
+            },
+            "naturalRegeneration": {
+                "type": "string",
+                "value": "true"
+            },
+            "commandBlockOutput": {
+                "type": "string",
+                "value": "false"
+            },
+            "doDaylightCycle": {
+                "type": "string",
+                "value": "false"
+            },
+            "logAdminCommands": {
+                "type": "string",
+                "value": "false"
+            },
+            "doEntityDrops": {
+                "type": "string",
+                "value": "true"
+            },
+            "sendCommandFeedback": {
+                "type": "string",
+                "value": "true"
+            },
+            "doFireTick": {
+                "type": "string",
+                "value": "true"
+            },
+            "mobGriefing": {
+                "type": "string",
+                "value": "true"
+            },
+            "randomTickSpeed": {
+                "type": "string",
+                "value": "3"
+            },
+            "reducedDebugInfo": {
+                "type": "string",
+                "value": "false"
+            },
+            "keepInventory": {
+                "type": "string",
+                "value": "true"
+            }
+        }
+    },
+    "generatorVersion": {
+        "type": "int",
+        "value": 0
+    }
+}

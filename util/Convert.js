@@ -4,6 +4,7 @@ var Assert = require("./Assert.js")
 module.exports = {
     "Convert360To256": Convert360To256,
     posToChunk: PosToChunk,
+    cloneObj: CloneObj
 }
 
 function Convert360To256(Yaw360){
@@ -27,4 +28,16 @@ function PosToChunk(Position){
     var z = Math.floor(Position.z / 16)
     
     return [x, z]
+}
+
+function CloneObj(Obj){
+    var NewObj = {}
+    for(var Key in Obj){
+        if(Obj[Key].constructor.name == "Object"){
+            NewObj[Key] = CloneObj(Obj[Key])
+        }else{
+            NewObj[Key] = Obj[Key]
+        }
+    }
+    return NewObj
 }
