@@ -83,7 +83,7 @@ module.exports = function Entity(UEID, World){
         for(var i = -Math.ceil(this.getPhysicalWidth()); i < Math.ceil(this.getPhysicalWidth()); i++){
             for(var j = -Math.ceil(this.getPhysicalWidth()); j < Math.ceil(this.getPhysicalWidth()); j++){
                 var BlockBelow = this.world.getBlock(new Vec3(i, Math.floor(this.position.y), j))
-                BlockBelow.position = new Vec3(i, Math.floor(this.position.y), j)
+                BlockBelow.position = new Vec3(Math.floor(this.position.x) + i, Math.floor(this.position.y), Math.floor(this.position.z) + j)
                 BlocksBelow.push(BlockBelow)
             }
         }
