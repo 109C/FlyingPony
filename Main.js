@@ -2,6 +2,7 @@
 
 var path = require("path")
 var fs = require("fs")
+var os = require("os")
 var Library = require("./Library.js")
 var NBT = Library.PrismarineNBT
 var NBTParse = Library.NBTParse
@@ -49,7 +50,7 @@ Object.keys(Library.internal.Config["worlds"]).forEach(function(WorldName){
     var WorldInfo = Library.internal.Config["worlds"][WorldName]
     if(Library.internal.generators[WorldInfo.generator] == undefined) throw new Error("Invalid generator name, no such generator");
     
-    var CurrentWorld = new World(Server, Library.internal.generators[WorldInfo.generator], Server.seed)
+    var CurrentWorld = new World(Server, Library.internal.generators[WorldInfo.generator], Server.seed, WorldName, path.resolve(__dirname + "/" + WorldInfo.path))
     
     Server.worlds[WorldName] = CurrentWorld
 })
@@ -65,7 +66,7 @@ Server.eventLoop = EventLoop
 /*
 || Chunk generator processes manager. Any arbitrary amount of workers can be spawned.
 */
-Server.ChunkGeneratorPool = new ParallelProcesses(path.resolve(__dirname + "/process/ChunkProc.js"), 2)
+Server.ChunkGeneratorPool = new ParallelProcesses(path.resolve(__dirname + "/process/ChunkProc.js"), os.cpus().length)
 
 Server.UUID = Library.UUID
 
@@ -73,7 +74,7 @@ Server.UUID = Library.UUID
 || For some reason, when the UEIDs do not start at tara strong's age the
 || spawn packet causes the client to freeze.
 */
-Server.UEID = 42
+Server.UEID = 43
 
 Server.eventLoopInterval = 0
 Server.tps = 0
